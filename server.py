@@ -3,7 +3,7 @@
 # Copyright (c) 2013-2014 Vyacheslav Slinko
 # Licensed under the MIT License
 
-import sys, os
+import sys, os, argparse
 sys.path.append('gen-py')
 
 from skype import Skype
@@ -89,6 +89,11 @@ class SkypeHandler:
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Skype via Apache Thrift.')
+    parser.add_argument('--warmup', action='store_true', help='preload all chats from client')
+
+    args = parser.parse_args()
+
     if sys.platform.startswith('linux'):
         skype = Skype4Py.Skype(Transport=os.environ.get('SKYPE_API_TRANSPORT', 'x11'))
     else:
@@ -102,7 +107,14 @@ def main():
 
     server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
 
+    print("Attaching to Skype")
     skype.Attach()
+
+    if args.warmup:
+        print("Warming up chats")
+        map(remap_chat_object, skype.Chats)
+
+    print("Serving")
     server.serve()
 
 
