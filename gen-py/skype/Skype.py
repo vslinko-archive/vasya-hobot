@@ -309,11 +309,11 @@ class get_chats_result:
       if fid == 0:
         if ftype == TType.LIST:
           self.success = []
-          (_etype3, _size0) = iprot.readListBegin()
-          for _i4 in xrange(_size0):
-            _elem5 = Chat()
-            _elem5.read(iprot)
-            self.success.append(_elem5)
+          (_etype31, _size28) = iprot.readListBegin()
+          for _i32 in xrange(_size28):
+            _elem33 = Chat()
+            _elem33.read(iprot)
+            self.success.append(_elem33)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
@@ -336,8 +336,8 @@ class get_chats_result:
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.LIST, 0)
       oprot.writeListBegin(TType.STRUCT, len(self.success))
-      for iter6 in self.success:
-        iter6.write(oprot)
+      for iter34 in self.success:
+        iter34.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.ae is not None:

@@ -59,312 +59,6 @@ Authentication.prototype.write = function(output) {
   return;
 };
 
-Chat = module.exports.Chat = function(args) {
-  this.activityTimestamp = null;
-  this.blob = null;
-  this.bookmarked = null;
-  this.description = null;
-  this.dialogPartner = null;
-  this.friendlyName = null;
-  this.guideLines = null;
-  this.myRole = null;
-  this.myStatus = null;
-  this.name = null;
-  this.options = null;
-  this.passwordHint = null;
-  this.status = null;
-  this.timestamp = null;
-  this.topic = null;
-  this.topicXML = null;
-  this.type = null;
-  if (args) {
-    if (args.activityTimestamp !== undefined) {
-      this.activityTimestamp = args.activityTimestamp;
-    }
-    if (args.blob !== undefined) {
-      this.blob = args.blob;
-    }
-    if (args.bookmarked !== undefined) {
-      this.bookmarked = args.bookmarked;
-    }
-    if (args.description !== undefined) {
-      this.description = args.description;
-    }
-    if (args.dialogPartner !== undefined) {
-      this.dialogPartner = args.dialogPartner;
-    }
-    if (args.friendlyName !== undefined) {
-      this.friendlyName = args.friendlyName;
-    }
-    if (args.guideLines !== undefined) {
-      this.guideLines = args.guideLines;
-    }
-    if (args.myRole !== undefined) {
-      this.myRole = args.myRole;
-    }
-    if (args.myStatus !== undefined) {
-      this.myStatus = args.myStatus;
-    }
-    if (args.name !== undefined) {
-      this.name = args.name;
-    }
-    if (args.options !== undefined) {
-      this.options = args.options;
-    }
-    if (args.passwordHint !== undefined) {
-      this.passwordHint = args.passwordHint;
-    }
-    if (args.status !== undefined) {
-      this.status = args.status;
-    }
-    if (args.timestamp !== undefined) {
-      this.timestamp = args.timestamp;
-    }
-    if (args.topic !== undefined) {
-      this.topic = args.topic;
-    }
-    if (args.topicXML !== undefined) {
-      this.topicXML = args.topicXML;
-    }
-    if (args.type !== undefined) {
-      this.type = args.type;
-    }
-  }
-};
-Chat.prototype = {};
-Chat.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.activityTimestamp = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.STRING) {
-        this.blob = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 7:
-      if (ftype == Thrift.Type.BOOL) {
-        this.bookmarked = input.readBool();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 9:
-      if (ftype == Thrift.Type.STRING) {
-        this.description = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 10:
-      if (ftype == Thrift.Type.STRING) {
-        this.dialogPartner = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 11:
-      if (ftype == Thrift.Type.STRING) {
-        this.friendlyName = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 12:
-      if (ftype == Thrift.Type.STRING) {
-        this.guideLines = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 16:
-      if (ftype == Thrift.Type.STRING) {
-        this.myRole = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 17:
-      if (ftype == Thrift.Type.STRING) {
-        this.myStatus = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 18:
-      if (ftype == Thrift.Type.STRING) {
-        this.name = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 19:
-      if (ftype == Thrift.Type.I16) {
-        this.options = input.readI16();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 20:
-      if (ftype == Thrift.Type.STRING) {
-        this.passwordHint = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 23:
-      if (ftype == Thrift.Type.STRING) {
-        this.status = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 24:
-      if (ftype == Thrift.Type.I32) {
-        this.timestamp = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 25:
-      if (ftype == Thrift.Type.STRING) {
-        this.topic = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 26:
-      if (ftype == Thrift.Type.STRING) {
-        this.topicXML = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 27:
-      if (ftype == Thrift.Type.STRING) {
-        this.type = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-Chat.prototype.write = function(output) {
-  output.writeStructBegin('Chat');
-  if (this.activityTimestamp !== null && this.activityTimestamp !== undefined) {
-    output.writeFieldBegin('activityTimestamp', Thrift.Type.I32, 3);
-    output.writeI32(this.activityTimestamp);
-    output.writeFieldEnd();
-  }
-  if (this.blob !== null && this.blob !== undefined) {
-    output.writeFieldBegin('blob', Thrift.Type.STRING, 6);
-    output.writeString(this.blob);
-    output.writeFieldEnd();
-  }
-  if (this.bookmarked !== null && this.bookmarked !== undefined) {
-    output.writeFieldBegin('bookmarked', Thrift.Type.BOOL, 7);
-    output.writeBool(this.bookmarked);
-    output.writeFieldEnd();
-  }
-  if (this.description !== null && this.description !== undefined) {
-    output.writeFieldBegin('description', Thrift.Type.STRING, 9);
-    output.writeString(this.description);
-    output.writeFieldEnd();
-  }
-  if (this.dialogPartner !== null && this.dialogPartner !== undefined) {
-    output.writeFieldBegin('dialogPartner', Thrift.Type.STRING, 10);
-    output.writeString(this.dialogPartner);
-    output.writeFieldEnd();
-  }
-  if (this.friendlyName !== null && this.friendlyName !== undefined) {
-    output.writeFieldBegin('friendlyName', Thrift.Type.STRING, 11);
-    output.writeString(this.friendlyName);
-    output.writeFieldEnd();
-  }
-  if (this.guideLines !== null && this.guideLines !== undefined) {
-    output.writeFieldBegin('guideLines', Thrift.Type.STRING, 12);
-    output.writeString(this.guideLines);
-    output.writeFieldEnd();
-  }
-  if (this.myRole !== null && this.myRole !== undefined) {
-    output.writeFieldBegin('myRole', Thrift.Type.STRING, 16);
-    output.writeString(this.myRole);
-    output.writeFieldEnd();
-  }
-  if (this.myStatus !== null && this.myStatus !== undefined) {
-    output.writeFieldBegin('myStatus', Thrift.Type.STRING, 17);
-    output.writeString(this.myStatus);
-    output.writeFieldEnd();
-  }
-  if (this.name !== null && this.name !== undefined) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 18);
-    output.writeString(this.name);
-    output.writeFieldEnd();
-  }
-  if (this.options !== null && this.options !== undefined) {
-    output.writeFieldBegin('options', Thrift.Type.I16, 19);
-    output.writeI16(this.options);
-    output.writeFieldEnd();
-  }
-  if (this.passwordHint !== null && this.passwordHint !== undefined) {
-    output.writeFieldBegin('passwordHint', Thrift.Type.STRING, 20);
-    output.writeString(this.passwordHint);
-    output.writeFieldEnd();
-  }
-  if (this.status !== null && this.status !== undefined) {
-    output.writeFieldBegin('status', Thrift.Type.STRING, 23);
-    output.writeString(this.status);
-    output.writeFieldEnd();
-  }
-  if (this.timestamp !== null && this.timestamp !== undefined) {
-    output.writeFieldBegin('timestamp', Thrift.Type.I32, 24);
-    output.writeI32(this.timestamp);
-    output.writeFieldEnd();
-  }
-  if (this.topic !== null && this.topic !== undefined) {
-    output.writeFieldBegin('topic', Thrift.Type.STRING, 25);
-    output.writeString(this.topic);
-    output.writeFieldEnd();
-  }
-  if (this.topicXML !== null && this.topicXML !== undefined) {
-    output.writeFieldBegin('topicXML', Thrift.Type.STRING, 26);
-    output.writeString(this.topicXML);
-    output.writeFieldEnd();
-  }
-  if (this.type !== null && this.type !== undefined) {
-    output.writeFieldBegin('type', Thrift.Type.STRING, 27);
-    output.writeString(this.type);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 User = module.exports.User = function(args) {
   this.about = null;
   this.buddyStatus = null;
@@ -904,6 +598,485 @@ User.prototype.write = function(output) {
   if (this.timezone !== null && this.timezone !== undefined) {
     output.writeFieldBegin('timezone', Thrift.Type.I32, 35);
     output.writeI32(this.timezone);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Chat = module.exports.Chat = function(args) {
+  this.activeMembers = null;
+  this.activityTimestamp = null;
+  this.adder = null;
+  this.applicants = null;
+  this.blob = null;
+  this.bookmarked = null;
+  this.description = null;
+  this.dialogPartner = null;
+  this.friendlyName = null;
+  this.guideLines = null;
+  this.members = null;
+  this.myRole = null;
+  this.myStatus = null;
+  this.name = null;
+  this.options = null;
+  this.passwordHint = null;
+  this.posters = null;
+  this.status = null;
+  this.timestamp = null;
+  this.topic = null;
+  this.topicXML = null;
+  this.type = null;
+  if (args) {
+    if (args.activeMembers !== undefined) {
+      this.activeMembers = args.activeMembers;
+    }
+    if (args.activityTimestamp !== undefined) {
+      this.activityTimestamp = args.activityTimestamp;
+    }
+    if (args.adder !== undefined) {
+      this.adder = args.adder;
+    }
+    if (args.applicants !== undefined) {
+      this.applicants = args.applicants;
+    }
+    if (args.blob !== undefined) {
+      this.blob = args.blob;
+    }
+    if (args.bookmarked !== undefined) {
+      this.bookmarked = args.bookmarked;
+    }
+    if (args.description !== undefined) {
+      this.description = args.description;
+    }
+    if (args.dialogPartner !== undefined) {
+      this.dialogPartner = args.dialogPartner;
+    }
+    if (args.friendlyName !== undefined) {
+      this.friendlyName = args.friendlyName;
+    }
+    if (args.guideLines !== undefined) {
+      this.guideLines = args.guideLines;
+    }
+    if (args.members !== undefined) {
+      this.members = args.members;
+    }
+    if (args.myRole !== undefined) {
+      this.myRole = args.myRole;
+    }
+    if (args.myStatus !== undefined) {
+      this.myStatus = args.myStatus;
+    }
+    if (args.name !== undefined) {
+      this.name = args.name;
+    }
+    if (args.options !== undefined) {
+      this.options = args.options;
+    }
+    if (args.passwordHint !== undefined) {
+      this.passwordHint = args.passwordHint;
+    }
+    if (args.posters !== undefined) {
+      this.posters = args.posters;
+    }
+    if (args.status !== undefined) {
+      this.status = args.status;
+    }
+    if (args.timestamp !== undefined) {
+      this.timestamp = args.timestamp;
+    }
+    if (args.topic !== undefined) {
+      this.topic = args.topic;
+    }
+    if (args.topicXML !== undefined) {
+      this.topicXML = args.topicXML;
+    }
+    if (args.type !== undefined) {
+      this.type = args.type;
+    }
+  }
+};
+Chat.prototype = {};
+Chat.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.activeMembers = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = new ttypes.User();
+          elem6.read(input);
+          this.activeMembers.push(elem6);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.activityTimestamp = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.adder = new ttypes.User();
+        this.adder.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.LIST) {
+        var _size7 = 0;
+        var _rtmp311;
+        this.applicants = [];
+        var _etype10 = 0;
+        _rtmp311 = input.readListBegin();
+        _etype10 = _rtmp311.etype;
+        _size7 = _rtmp311.size;
+        for (var _i12 = 0; _i12 < _size7; ++_i12)
+        {
+          var elem13 = null;
+          elem13 = new ttypes.User();
+          elem13.read(input);
+          this.applicants.push(elem13);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.STRING) {
+        this.blob = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.BOOL) {
+        this.bookmarked = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.description = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.dialogPartner = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.STRING) {
+        this.friendlyName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.STRING) {
+        this.guideLines = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.LIST) {
+        var _size14 = 0;
+        var _rtmp318;
+        this.members = [];
+        var _etype17 = 0;
+        _rtmp318 = input.readListBegin();
+        _etype17 = _rtmp318.etype;
+        _size14 = _rtmp318.size;
+        for (var _i19 = 0; _i19 < _size14; ++_i19)
+        {
+          var elem20 = null;
+          elem20 = new ttypes.User();
+          elem20.read(input);
+          this.members.push(elem20);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 16:
+      if (ftype == Thrift.Type.STRING) {
+        this.myRole = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 17:
+      if (ftype == Thrift.Type.STRING) {
+        this.myStatus = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 18:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 19:
+      if (ftype == Thrift.Type.I16) {
+        this.options = input.readI16();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 20:
+      if (ftype == Thrift.Type.STRING) {
+        this.passwordHint = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 21:
+      if (ftype == Thrift.Type.LIST) {
+        var _size21 = 0;
+        var _rtmp325;
+        this.posters = [];
+        var _etype24 = 0;
+        _rtmp325 = input.readListBegin();
+        _etype24 = _rtmp325.etype;
+        _size21 = _rtmp325.size;
+        for (var _i26 = 0; _i26 < _size21; ++_i26)
+        {
+          var elem27 = null;
+          elem27 = new ttypes.User();
+          elem27.read(input);
+          this.posters.push(elem27);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 23:
+      if (ftype == Thrift.Type.STRING) {
+        this.status = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 24:
+      if (ftype == Thrift.Type.I32) {
+        this.timestamp = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 25:
+      if (ftype == Thrift.Type.STRING) {
+        this.topic = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 26:
+      if (ftype == Thrift.Type.STRING) {
+        this.topicXML = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 27:
+      if (ftype == Thrift.Type.STRING) {
+        this.type = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Chat.prototype.write = function(output) {
+  output.writeStructBegin('Chat');
+  if (this.activeMembers !== null && this.activeMembers !== undefined) {
+    output.writeFieldBegin('activeMembers', Thrift.Type.LIST, 1);
+    output.writeListBegin(Thrift.Type.STRUCT, this.activeMembers.length);
+    for (var iter28 in this.activeMembers)
+    {
+      if (this.activeMembers.hasOwnProperty(iter28))
+      {
+        iter28 = this.activeMembers[iter28];
+        iter28.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.activityTimestamp !== null && this.activityTimestamp !== undefined) {
+    output.writeFieldBegin('activityTimestamp', Thrift.Type.I32, 3);
+    output.writeI32(this.activityTimestamp);
+    output.writeFieldEnd();
+  }
+  if (this.adder !== null && this.adder !== undefined) {
+    output.writeFieldBegin('adder', Thrift.Type.STRUCT, 4);
+    this.adder.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.applicants !== null && this.applicants !== undefined) {
+    output.writeFieldBegin('applicants', Thrift.Type.LIST, 5);
+    output.writeListBegin(Thrift.Type.STRUCT, this.applicants.length);
+    for (var iter29 in this.applicants)
+    {
+      if (this.applicants.hasOwnProperty(iter29))
+      {
+        iter29 = this.applicants[iter29];
+        iter29.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.blob !== null && this.blob !== undefined) {
+    output.writeFieldBegin('blob', Thrift.Type.STRING, 6);
+    output.writeString(this.blob);
+    output.writeFieldEnd();
+  }
+  if (this.bookmarked !== null && this.bookmarked !== undefined) {
+    output.writeFieldBegin('bookmarked', Thrift.Type.BOOL, 7);
+    output.writeBool(this.bookmarked);
+    output.writeFieldEnd();
+  }
+  if (this.description !== null && this.description !== undefined) {
+    output.writeFieldBegin('description', Thrift.Type.STRING, 9);
+    output.writeString(this.description);
+    output.writeFieldEnd();
+  }
+  if (this.dialogPartner !== null && this.dialogPartner !== undefined) {
+    output.writeFieldBegin('dialogPartner', Thrift.Type.STRING, 10);
+    output.writeString(this.dialogPartner);
+    output.writeFieldEnd();
+  }
+  if (this.friendlyName !== null && this.friendlyName !== undefined) {
+    output.writeFieldBegin('friendlyName', Thrift.Type.STRING, 11);
+    output.writeString(this.friendlyName);
+    output.writeFieldEnd();
+  }
+  if (this.guideLines !== null && this.guideLines !== undefined) {
+    output.writeFieldBegin('guideLines', Thrift.Type.STRING, 12);
+    output.writeString(this.guideLines);
+    output.writeFieldEnd();
+  }
+  if (this.members !== null && this.members !== undefined) {
+    output.writeFieldBegin('members', Thrift.Type.LIST, 14);
+    output.writeListBegin(Thrift.Type.STRUCT, this.members.length);
+    for (var iter30 in this.members)
+    {
+      if (this.members.hasOwnProperty(iter30))
+      {
+        iter30 = this.members[iter30];
+        iter30.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.myRole !== null && this.myRole !== undefined) {
+    output.writeFieldBegin('myRole', Thrift.Type.STRING, 16);
+    output.writeString(this.myRole);
+    output.writeFieldEnd();
+  }
+  if (this.myStatus !== null && this.myStatus !== undefined) {
+    output.writeFieldBegin('myStatus', Thrift.Type.STRING, 17);
+    output.writeString(this.myStatus);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 18);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.options !== null && this.options !== undefined) {
+    output.writeFieldBegin('options', Thrift.Type.I16, 19);
+    output.writeI16(this.options);
+    output.writeFieldEnd();
+  }
+  if (this.passwordHint !== null && this.passwordHint !== undefined) {
+    output.writeFieldBegin('passwordHint', Thrift.Type.STRING, 20);
+    output.writeString(this.passwordHint);
+    output.writeFieldEnd();
+  }
+  if (this.posters !== null && this.posters !== undefined) {
+    output.writeFieldBegin('posters', Thrift.Type.LIST, 21);
+    output.writeListBegin(Thrift.Type.STRUCT, this.posters.length);
+    for (var iter31 in this.posters)
+    {
+      if (this.posters.hasOwnProperty(iter31))
+      {
+        iter31 = this.posters[iter31];
+        iter31.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRING, 23);
+    output.writeString(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.timestamp !== null && this.timestamp !== undefined) {
+    output.writeFieldBegin('timestamp', Thrift.Type.I32, 24);
+    output.writeI32(this.timestamp);
+    output.writeFieldEnd();
+  }
+  if (this.topic !== null && this.topic !== undefined) {
+    output.writeFieldBegin('topic', Thrift.Type.STRING, 25);
+    output.writeString(this.topic);
+    output.writeFieldEnd();
+  }
+  if (this.topicXML !== null && this.topicXML !== undefined) {
+    output.writeFieldBegin('topicXML', Thrift.Type.STRING, 26);
+    output.writeString(this.topicXML);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.STRING, 27);
+    output.writeString(this.type);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

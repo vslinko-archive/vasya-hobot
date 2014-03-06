@@ -94,19 +94,19 @@ Skype_get_chats_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size0 = 0;
-        var _rtmp34;
+        var _size32 = 0;
+        var _rtmp336;
         this.success = [];
-        var _etype3 = 0;
-        _rtmp34 = input.readListBegin();
-        _etype3 = _rtmp34.etype;
-        _size0 = _rtmp34.size;
-        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        var _etype35 = 0;
+        _rtmp336 = input.readListBegin();
+        _etype35 = _rtmp336.etype;
+        _size32 = _rtmp336.size;
+        for (var _i37 = 0; _i37 < _size32; ++_i37)
         {
-          var elem6 = null;
-          elem6 = new ttypes.Chat();
-          elem6.read(input);
-          this.success.push(elem6);
+          var elem38 = null;
+          elem38 = new ttypes.Chat();
+          elem38.read(input);
+          this.success.push(elem38);
         }
         input.readListEnd();
       } else {
@@ -135,12 +135,12 @@ Skype_get_chats_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
-    for (var iter7 in this.success)
+    for (var iter39 in this.success)
     {
-      if (this.success.hasOwnProperty(iter7))
+      if (this.success.hasOwnProperty(iter39))
       {
-        iter7 = this.success[iter7];
-        iter7.write(output);
+        iter39 = this.success[iter39];
+        iter39.write(output);
       }
     }
     output.writeListEnd();

@@ -49,21 +49,39 @@ chat_mapper = mapper_factory(Chat)
 user_mapper = mapper_factory(User)
 
 
+def remap_user_object(obj):
+    if obj.Handle == "":
+        return None
+
+    new_obj = user_mapper(obj)
+    return new_obj
+
+
+def remap_chat_object(obj):
+    new_obj = chat_mapper(obj)
+    new_obj.activeMembers = map(remap_user_object, obj.ActiveMembers)
+    new_obj.adder = remap_user_object(obj.Adder)
+    new_obj.applicants = map(remap_user_object, obj.Applicants)
+    new_obj.members = map(remap_user_object, obj.Members)
+    new_obj.posters = map(remap_user_object, obj.Posters)
+    return new_obj
+
+
 class SkypeHandler:
   def __init__(self, skype):
     self.skype = skype
 
   def get_chats(self, auth):
     self._check_auth(auth)
-    return map(chat_mapper, self.skype.Chats)
+    return map(remap_chat_object, self.skype.Chats)
 
   def get_chat(self, auth, name):
     self._check_auth(auth)
-    return chat_mapper(self.skype.Chat(name))
+    return remap_chat_object(self.skype.Chat(name))
 
   def get_user(self, auth, handle):
     self._check_auth(auth)
-    return user_mapper(self.skype.User(handle))
+    return remap_user_object(self.skype.User(handle))
 
   def _check_auth(self, auth):
     if auth.token != "token":

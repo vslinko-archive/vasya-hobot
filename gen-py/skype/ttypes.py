@@ -84,302 +84,6 @@ class Authentication:
   def __ne__(self, other):
     return not (self == other)
 
-class Chat:
-  """
-  Attributes:
-   - activityTimestamp
-   - blob
-   - bookmarked
-   - description
-   - dialogPartner
-   - friendlyName
-   - guideLines
-   - myRole
-   - myStatus
-   - name
-   - options
-   - passwordHint
-   - status
-   - timestamp
-   - topic
-   - topicXML
-   - type
-  """
-
-  thrift_spec = (
-    None, # 0
-    None, # 1
-    None, # 2
-    (3, TType.I32, 'activityTimestamp', None, None, ), # 3
-    None, # 4
-    None, # 5
-    (6, TType.STRING, 'blob', None, None, ), # 6
-    (7, TType.BOOL, 'bookmarked', None, None, ), # 7
-    None, # 8
-    (9, TType.STRING, 'description', None, None, ), # 9
-    (10, TType.STRING, 'dialogPartner', None, None, ), # 10
-    (11, TType.STRING, 'friendlyName', None, None, ), # 11
-    (12, TType.STRING, 'guideLines', None, None, ), # 12
-    None, # 13
-    None, # 14
-    None, # 15
-    (16, TType.STRING, 'myRole', None, None, ), # 16
-    (17, TType.STRING, 'myStatus', None, None, ), # 17
-    (18, TType.STRING, 'name', None, None, ), # 18
-    (19, TType.I16, 'options', None, None, ), # 19
-    (20, TType.STRING, 'passwordHint', None, None, ), # 20
-    None, # 21
-    None, # 22
-    (23, TType.STRING, 'status', None, None, ), # 23
-    (24, TType.I32, 'timestamp', None, None, ), # 24
-    (25, TType.STRING, 'topic', None, None, ), # 25
-    (26, TType.STRING, 'topicXML', None, None, ), # 26
-    (27, TType.STRING, 'type', None, None, ), # 27
-  )
-
-  def __init__(self, activityTimestamp=None, blob=None, bookmarked=None, description=None, dialogPartner=None, friendlyName=None, guideLines=None, myRole=None, myStatus=None, name=None, options=None, passwordHint=None, status=None, timestamp=None, topic=None, topicXML=None, type=None,):
-    self.activityTimestamp = activityTimestamp
-    self.blob = blob
-    self.bookmarked = bookmarked
-    self.description = description
-    self.dialogPartner = dialogPartner
-    self.friendlyName = friendlyName
-    self.guideLines = guideLines
-    self.myRole = myRole
-    self.myStatus = myStatus
-    self.name = name
-    self.options = options
-    self.passwordHint = passwordHint
-    self.status = status
-    self.timestamp = timestamp
-    self.topic = topic
-    self.topicXML = topicXML
-    self.type = type
-
-  def read(self, iprot):
-    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
-      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 3:
-        if ftype == TType.I32:
-          self.activityTimestamp = iprot.readI32();
-        else:
-          iprot.skip(ftype)
-      elif fid == 6:
-        if ftype == TType.STRING:
-          self.blob = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 7:
-        if ftype == TType.BOOL:
-          self.bookmarked = iprot.readBool();
-        else:
-          iprot.skip(ftype)
-      elif fid == 9:
-        if ftype == TType.STRING:
-          self.description = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 10:
-        if ftype == TType.STRING:
-          self.dialogPartner = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 11:
-        if ftype == TType.STRING:
-          self.friendlyName = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 12:
-        if ftype == TType.STRING:
-          self.guideLines = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 16:
-        if ftype == TType.STRING:
-          self.myRole = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 17:
-        if ftype == TType.STRING:
-          self.myStatus = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 18:
-        if ftype == TType.STRING:
-          self.name = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 19:
-        if ftype == TType.I16:
-          self.options = iprot.readI16();
-        else:
-          iprot.skip(ftype)
-      elif fid == 20:
-        if ftype == TType.STRING:
-          self.passwordHint = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 23:
-        if ftype == TType.STRING:
-          self.status = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 24:
-        if ftype == TType.I32:
-          self.timestamp = iprot.readI32();
-        else:
-          iprot.skip(ftype)
-      elif fid == 25:
-        if ftype == TType.STRING:
-          self.topic = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 26:
-        if ftype == TType.STRING:
-          self.topicXML = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      elif fid == 27:
-        if ftype == TType.STRING:
-          self.type = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
-      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
-      return
-    oprot.writeStructBegin('Chat')
-    if self.activityTimestamp is not None:
-      oprot.writeFieldBegin('activityTimestamp', TType.I32, 3)
-      oprot.writeI32(self.activityTimestamp)
-      oprot.writeFieldEnd()
-    if self.blob is not None:
-      oprot.writeFieldBegin('blob', TType.STRING, 6)
-      oprot.writeString(self.blob)
-      oprot.writeFieldEnd()
-    if self.bookmarked is not None:
-      oprot.writeFieldBegin('bookmarked', TType.BOOL, 7)
-      oprot.writeBool(self.bookmarked)
-      oprot.writeFieldEnd()
-    if self.description is not None:
-      oprot.writeFieldBegin('description', TType.STRING, 9)
-      oprot.writeString(self.description)
-      oprot.writeFieldEnd()
-    if self.dialogPartner is not None:
-      oprot.writeFieldBegin('dialogPartner', TType.STRING, 10)
-      oprot.writeString(self.dialogPartner)
-      oprot.writeFieldEnd()
-    if self.friendlyName is not None:
-      oprot.writeFieldBegin('friendlyName', TType.STRING, 11)
-      oprot.writeString(self.friendlyName)
-      oprot.writeFieldEnd()
-    if self.guideLines is not None:
-      oprot.writeFieldBegin('guideLines', TType.STRING, 12)
-      oprot.writeString(self.guideLines)
-      oprot.writeFieldEnd()
-    if self.myRole is not None:
-      oprot.writeFieldBegin('myRole', TType.STRING, 16)
-      oprot.writeString(self.myRole)
-      oprot.writeFieldEnd()
-    if self.myStatus is not None:
-      oprot.writeFieldBegin('myStatus', TType.STRING, 17)
-      oprot.writeString(self.myStatus)
-      oprot.writeFieldEnd()
-    if self.name is not None:
-      oprot.writeFieldBegin('name', TType.STRING, 18)
-      oprot.writeString(self.name)
-      oprot.writeFieldEnd()
-    if self.options is not None:
-      oprot.writeFieldBegin('options', TType.I16, 19)
-      oprot.writeI16(self.options)
-      oprot.writeFieldEnd()
-    if self.passwordHint is not None:
-      oprot.writeFieldBegin('passwordHint', TType.STRING, 20)
-      oprot.writeString(self.passwordHint)
-      oprot.writeFieldEnd()
-    if self.status is not None:
-      oprot.writeFieldBegin('status', TType.STRING, 23)
-      oprot.writeString(self.status)
-      oprot.writeFieldEnd()
-    if self.timestamp is not None:
-      oprot.writeFieldBegin('timestamp', TType.I32, 24)
-      oprot.writeI32(self.timestamp)
-      oprot.writeFieldEnd()
-    if self.topic is not None:
-      oprot.writeFieldBegin('topic', TType.STRING, 25)
-      oprot.writeString(self.topic)
-      oprot.writeFieldEnd()
-    if self.topicXML is not None:
-      oprot.writeFieldBegin('topicXML', TType.STRING, 26)
-      oprot.writeString(self.topicXML)
-      oprot.writeFieldEnd()
-    if self.type is not None:
-      oprot.writeFieldBegin('type', TType.STRING, 27)
-      oprot.writeString(self.type)
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def validate(self):
-    if self.activityTimestamp is None:
-      raise TProtocol.TProtocolException(message='Required field activityTimestamp is unset!')
-    if self.blob is None:
-      raise TProtocol.TProtocolException(message='Required field blob is unset!')
-    if self.bookmarked is None:
-      raise TProtocol.TProtocolException(message='Required field bookmarked is unset!')
-    if self.description is None:
-      raise TProtocol.TProtocolException(message='Required field description is unset!')
-    if self.dialogPartner is None:
-      raise TProtocol.TProtocolException(message='Required field dialogPartner is unset!')
-    if self.friendlyName is None:
-      raise TProtocol.TProtocolException(message='Required field friendlyName is unset!')
-    if self.guideLines is None:
-      raise TProtocol.TProtocolException(message='Required field guideLines is unset!')
-    if self.myRole is None:
-      raise TProtocol.TProtocolException(message='Required field myRole is unset!')
-    if self.myStatus is None:
-      raise TProtocol.TProtocolException(message='Required field myStatus is unset!')
-    if self.name is None:
-      raise TProtocol.TProtocolException(message='Required field name is unset!')
-    if self.options is None:
-      raise TProtocol.TProtocolException(message='Required field options is unset!')
-    if self.passwordHint is None:
-      raise TProtocol.TProtocolException(message='Required field passwordHint is unset!')
-    if self.status is None:
-      raise TProtocol.TProtocolException(message='Required field status is unset!')
-    if self.timestamp is None:
-      raise TProtocol.TProtocolException(message='Required field timestamp is unset!')
-    if self.topic is None:
-      raise TProtocol.TProtocolException(message='Required field topic is unset!')
-    if self.topicXML is None:
-      raise TProtocol.TProtocolException(message='Required field topicXML is unset!')
-    if self.type is None:
-      raise TProtocol.TProtocolException(message='Required field type is unset!')
-    return
-
-
-  def __repr__(self):
-    L = ['%s=%r' % (key, value)
-      for key, value in self.__dict__.iteritems()]
-    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-  def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-  def __ne__(self, other):
-    return not (self == other)
-
 class User:
   """
   Attributes:
@@ -865,6 +569,404 @@ class User:
       raise TProtocol.TProtocolException(message='Required field speedDial is unset!')
     if self.timezone is None:
       raise TProtocol.TProtocolException(message='Required field timezone is unset!')
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class Chat:
+  """
+  Attributes:
+   - activeMembers
+   - activityTimestamp
+   - adder
+   - applicants
+   - blob
+   - bookmarked
+   - description
+   - dialogPartner
+   - friendlyName
+   - guideLines
+   - members
+   - myRole
+   - myStatus
+   - name
+   - options
+   - passwordHint
+   - posters
+   - status
+   - timestamp
+   - topic
+   - topicXML
+   - type
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.LIST, 'activeMembers', (TType.STRUCT,(User, User.thrift_spec)), None, ), # 1
+    None, # 2
+    (3, TType.I32, 'activityTimestamp', None, None, ), # 3
+    (4, TType.STRUCT, 'adder', (User, User.thrift_spec), None, ), # 4
+    (5, TType.LIST, 'applicants', (TType.STRUCT,(User, User.thrift_spec)), None, ), # 5
+    (6, TType.STRING, 'blob', None, None, ), # 6
+    (7, TType.BOOL, 'bookmarked', None, None, ), # 7
+    None, # 8
+    (9, TType.STRING, 'description', None, None, ), # 9
+    (10, TType.STRING, 'dialogPartner', None, None, ), # 10
+    (11, TType.STRING, 'friendlyName', None, None, ), # 11
+    (12, TType.STRING, 'guideLines', None, None, ), # 12
+    None, # 13
+    (14, TType.LIST, 'members', (TType.STRUCT,(User, User.thrift_spec)), None, ), # 14
+    None, # 15
+    (16, TType.STRING, 'myRole', None, None, ), # 16
+    (17, TType.STRING, 'myStatus', None, None, ), # 17
+    (18, TType.STRING, 'name', None, None, ), # 18
+    (19, TType.I16, 'options', None, None, ), # 19
+    (20, TType.STRING, 'passwordHint', None, None, ), # 20
+    (21, TType.LIST, 'posters', (TType.STRUCT,(User, User.thrift_spec)), None, ), # 21
+    None, # 22
+    (23, TType.STRING, 'status', None, None, ), # 23
+    (24, TType.I32, 'timestamp', None, None, ), # 24
+    (25, TType.STRING, 'topic', None, None, ), # 25
+    (26, TType.STRING, 'topicXML', None, None, ), # 26
+    (27, TType.STRING, 'type', None, None, ), # 27
+  )
+
+  def __init__(self, activeMembers=None, activityTimestamp=None, adder=None, applicants=None, blob=None, bookmarked=None, description=None, dialogPartner=None, friendlyName=None, guideLines=None, members=None, myRole=None, myStatus=None, name=None, options=None, passwordHint=None, posters=None, status=None, timestamp=None, topic=None, topicXML=None, type=None,):
+    self.activeMembers = activeMembers
+    self.activityTimestamp = activityTimestamp
+    self.adder = adder
+    self.applicants = applicants
+    self.blob = blob
+    self.bookmarked = bookmarked
+    self.description = description
+    self.dialogPartner = dialogPartner
+    self.friendlyName = friendlyName
+    self.guideLines = guideLines
+    self.members = members
+    self.myRole = myRole
+    self.myStatus = myStatus
+    self.name = name
+    self.options = options
+    self.passwordHint = passwordHint
+    self.posters = posters
+    self.status = status
+    self.timestamp = timestamp
+    self.topic = topic
+    self.topicXML = topicXML
+    self.type = type
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.LIST:
+          self.activeMembers = []
+          (_etype3, _size0) = iprot.readListBegin()
+          for _i4 in xrange(_size0):
+            _elem5 = User()
+            _elem5.read(iprot)
+            self.activeMembers.append(_elem5)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.I32:
+          self.activityTimestamp = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRUCT:
+          self.adder = User()
+          self.adder.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.LIST:
+          self.applicants = []
+          (_etype9, _size6) = iprot.readListBegin()
+          for _i10 in xrange(_size6):
+            _elem11 = User()
+            _elem11.read(iprot)
+            self.applicants.append(_elem11)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.STRING:
+          self.blob = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.BOOL:
+          self.bookmarked = iprot.readBool();
+        else:
+          iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRING:
+          self.description = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.STRING:
+          self.dialogPartner = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.STRING:
+          self.friendlyName = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 12:
+        if ftype == TType.STRING:
+          self.guideLines = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 14:
+        if ftype == TType.LIST:
+          self.members = []
+          (_etype15, _size12) = iprot.readListBegin()
+          for _i16 in xrange(_size12):
+            _elem17 = User()
+            _elem17.read(iprot)
+            self.members.append(_elem17)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 16:
+        if ftype == TType.STRING:
+          self.myRole = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 17:
+        if ftype == TType.STRING:
+          self.myStatus = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 18:
+        if ftype == TType.STRING:
+          self.name = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 19:
+        if ftype == TType.I16:
+          self.options = iprot.readI16();
+        else:
+          iprot.skip(ftype)
+      elif fid == 20:
+        if ftype == TType.STRING:
+          self.passwordHint = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 21:
+        if ftype == TType.LIST:
+          self.posters = []
+          (_etype21, _size18) = iprot.readListBegin()
+          for _i22 in xrange(_size18):
+            _elem23 = User()
+            _elem23.read(iprot)
+            self.posters.append(_elem23)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 23:
+        if ftype == TType.STRING:
+          self.status = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 24:
+        if ftype == TType.I32:
+          self.timestamp = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 25:
+        if ftype == TType.STRING:
+          self.topic = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 26:
+        if ftype == TType.STRING:
+          self.topicXML = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 27:
+        if ftype == TType.STRING:
+          self.type = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('Chat')
+    if self.activeMembers is not None:
+      oprot.writeFieldBegin('activeMembers', TType.LIST, 1)
+      oprot.writeListBegin(TType.STRUCT, len(self.activeMembers))
+      for iter24 in self.activeMembers:
+        iter24.write(oprot)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.activityTimestamp is not None:
+      oprot.writeFieldBegin('activityTimestamp', TType.I32, 3)
+      oprot.writeI32(self.activityTimestamp)
+      oprot.writeFieldEnd()
+    if self.adder is not None:
+      oprot.writeFieldBegin('adder', TType.STRUCT, 4)
+      self.adder.write(oprot)
+      oprot.writeFieldEnd()
+    if self.applicants is not None:
+      oprot.writeFieldBegin('applicants', TType.LIST, 5)
+      oprot.writeListBegin(TType.STRUCT, len(self.applicants))
+      for iter25 in self.applicants:
+        iter25.write(oprot)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.blob is not None:
+      oprot.writeFieldBegin('blob', TType.STRING, 6)
+      oprot.writeString(self.blob)
+      oprot.writeFieldEnd()
+    if self.bookmarked is not None:
+      oprot.writeFieldBegin('bookmarked', TType.BOOL, 7)
+      oprot.writeBool(self.bookmarked)
+      oprot.writeFieldEnd()
+    if self.description is not None:
+      oprot.writeFieldBegin('description', TType.STRING, 9)
+      oprot.writeString(self.description)
+      oprot.writeFieldEnd()
+    if self.dialogPartner is not None:
+      oprot.writeFieldBegin('dialogPartner', TType.STRING, 10)
+      oprot.writeString(self.dialogPartner)
+      oprot.writeFieldEnd()
+    if self.friendlyName is not None:
+      oprot.writeFieldBegin('friendlyName', TType.STRING, 11)
+      oprot.writeString(self.friendlyName)
+      oprot.writeFieldEnd()
+    if self.guideLines is not None:
+      oprot.writeFieldBegin('guideLines', TType.STRING, 12)
+      oprot.writeString(self.guideLines)
+      oprot.writeFieldEnd()
+    if self.members is not None:
+      oprot.writeFieldBegin('members', TType.LIST, 14)
+      oprot.writeListBegin(TType.STRUCT, len(self.members))
+      for iter26 in self.members:
+        iter26.write(oprot)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.myRole is not None:
+      oprot.writeFieldBegin('myRole', TType.STRING, 16)
+      oprot.writeString(self.myRole)
+      oprot.writeFieldEnd()
+    if self.myStatus is not None:
+      oprot.writeFieldBegin('myStatus', TType.STRING, 17)
+      oprot.writeString(self.myStatus)
+      oprot.writeFieldEnd()
+    if self.name is not None:
+      oprot.writeFieldBegin('name', TType.STRING, 18)
+      oprot.writeString(self.name)
+      oprot.writeFieldEnd()
+    if self.options is not None:
+      oprot.writeFieldBegin('options', TType.I16, 19)
+      oprot.writeI16(self.options)
+      oprot.writeFieldEnd()
+    if self.passwordHint is not None:
+      oprot.writeFieldBegin('passwordHint', TType.STRING, 20)
+      oprot.writeString(self.passwordHint)
+      oprot.writeFieldEnd()
+    if self.posters is not None:
+      oprot.writeFieldBegin('posters', TType.LIST, 21)
+      oprot.writeListBegin(TType.STRUCT, len(self.posters))
+      for iter27 in self.posters:
+        iter27.write(oprot)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.status is not None:
+      oprot.writeFieldBegin('status', TType.STRING, 23)
+      oprot.writeString(self.status)
+      oprot.writeFieldEnd()
+    if self.timestamp is not None:
+      oprot.writeFieldBegin('timestamp', TType.I32, 24)
+      oprot.writeI32(self.timestamp)
+      oprot.writeFieldEnd()
+    if self.topic is not None:
+      oprot.writeFieldBegin('topic', TType.STRING, 25)
+      oprot.writeString(self.topic)
+      oprot.writeFieldEnd()
+    if self.topicXML is not None:
+      oprot.writeFieldBegin('topicXML', TType.STRING, 26)
+      oprot.writeString(self.topicXML)
+      oprot.writeFieldEnd()
+    if self.type is not None:
+      oprot.writeFieldBegin('type', TType.STRING, 27)
+      oprot.writeString(self.type)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    if self.activeMembers is None:
+      raise TProtocol.TProtocolException(message='Required field activeMembers is unset!')
+    if self.activityTimestamp is None:
+      raise TProtocol.TProtocolException(message='Required field activityTimestamp is unset!')
+    if self.adder is None:
+      raise TProtocol.TProtocolException(message='Required field adder is unset!')
+    if self.applicants is None:
+      raise TProtocol.TProtocolException(message='Required field applicants is unset!')
+    if self.blob is None:
+      raise TProtocol.TProtocolException(message='Required field blob is unset!')
+    if self.bookmarked is None:
+      raise TProtocol.TProtocolException(message='Required field bookmarked is unset!')
+    if self.description is None:
+      raise TProtocol.TProtocolException(message='Required field description is unset!')
+    if self.dialogPartner is None:
+      raise TProtocol.TProtocolException(message='Required field dialogPartner is unset!')
+    if self.friendlyName is None:
+      raise TProtocol.TProtocolException(message='Required field friendlyName is unset!')
+    if self.guideLines is None:
+      raise TProtocol.TProtocolException(message='Required field guideLines is unset!')
+    if self.members is None:
+      raise TProtocol.TProtocolException(message='Required field members is unset!')
+    if self.myRole is None:
+      raise TProtocol.TProtocolException(message='Required field myRole is unset!')
+    if self.myStatus is None:
+      raise TProtocol.TProtocolException(message='Required field myStatus is unset!')
+    if self.name is None:
+      raise TProtocol.TProtocolException(message='Required field name is unset!')
+    if self.options is None:
+      raise TProtocol.TProtocolException(message='Required field options is unset!')
+    if self.passwordHint is None:
+      raise TProtocol.TProtocolException(message='Required field passwordHint is unset!')
+    if self.posters is None:
+      raise TProtocol.TProtocolException(message='Required field posters is unset!')
+    if self.status is None:
+      raise TProtocol.TProtocolException(message='Required field status is unset!')
+    if self.timestamp is None:
+      raise TProtocol.TProtocolException(message='Required field timestamp is unset!')
+    if self.topic is None:
+      raise TProtocol.TProtocolException(message='Required field topic is unset!')
+    if self.topicXML is None:
+      raise TProtocol.TProtocolException(message='Required field topicXML is unset!')
+    if self.type is None:
+      raise TProtocol.TProtocolException(message='Required field type is unset!')
     return
 
 

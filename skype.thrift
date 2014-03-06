@@ -10,37 +10,6 @@ struct Authentication {
 }
 
 
-struct Chat {
-    # activeMembers
-    # activityDatetime
-    3: required i32 activityTimestamp,
-    # adder
-    # applicants
-    6: required string blob,
-    7: required bool bookmarked,
-    # datetime
-    9: required string description,
-    10: required string dialogPartner,
-    11: required string friendlyName,
-    12: required string guideLines,
-    # memberObjects
-    # members
-    # messages
-    16: required string myRole,
-    17: required string myStatus,
-    18: required string name,
-    19: required i16 options,
-    20: required string passwordHint,
-    # posters
-    # recentMessages
-    23: required string status,
-    24: required i32 timestamp,
-    25: required string topic,
-    26: required string topicXML,
-    27: required string type
-}
-
-
 struct User {
     1: required string about,
     # aliases
@@ -77,6 +46,37 @@ struct User {
     33: required string sex,
     34: required string speedDial,
     35: required i32 timezone
+}
+
+
+struct Chat {
+    1: required list<User> activeMembers,
+    # activityDatetime
+    3: required i32 activityTimestamp,
+    4: required User adder,
+    5: required list<User> applicants,
+    6: required string blob,
+    7: required bool bookmarked,
+    # datetime
+    9: required string description,
+    10: required string dialogPartner,
+    11: required string friendlyName,
+    12: required string guideLines,
+    # memberObjects
+    14: required list<User> members,
+    # messages
+    16: required string myRole,
+    17: required string myStatus,
+    18: required string name,
+    19: required i16 options,
+    20: required string passwordHint,
+    21: required list<User> posters,
+    # recentMessages
+    23: required string status,
+    24: required i32 timestamp,
+    25: required string topic,
+    26: required string topicXML,
+    27: required string type
 }
 
 
