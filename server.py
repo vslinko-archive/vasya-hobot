@@ -8,6 +8,7 @@ sys.path.append('gen-py')
 
 from skype import Skype
 from skype.ttypes import Chat, User
+from skype.ttypes import AuthenticationException
 
 import Skype4Py
 from thrift import Thrift
@@ -52,14 +53,21 @@ class SkypeHandler:
   def __init__(self, skype):
     self.skype = skype
 
-  def get_chats(self):
+  def get_chats(self, auth):
+    self._check_auth(auth)
     return map(chat_mapper, self.skype.Chats)
 
-  def get_chat(self, name):
+  def get_chat(self, auth, name):
+    self._check_auth(auth)
     return chat_mapper(self.skype.Chat(name))
 
-  def get_user(self, handle):
+  def get_user(self, auth, handle):
+    self._check_auth(auth)
     return user_mapper(self.skype.User(handle))
+
+  def _check_auth(self, auth):
+    if auth.token != "token":
+        raise AuthenticationException()
 
 
 def main():

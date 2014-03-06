@@ -18,19 +18,25 @@ except:
 
 
 class Iface:
-  def get_chats(self):
-    pass
-
-  def get_chat(self, name):
+  def get_chats(self, auth):
     """
     Parameters:
+     - auth
+    """
+    pass
+
+  def get_chat(self, auth, name):
+    """
+    Parameters:
+     - auth
      - name
     """
     pass
 
-  def get_user(self, handle):
+  def get_user(self, auth, handle):
     """
     Parameters:
+     - auth
      - handle
     """
     pass
@@ -43,13 +49,18 @@ class Client(Iface):
       self._oprot = oprot
     self._seqid = 0
 
-  def get_chats(self):
-    self.send_get_chats()
+  def get_chats(self, auth):
+    """
+    Parameters:
+     - auth
+    """
+    self.send_get_chats(auth)
     return self.recv_get_chats()
 
-  def send_get_chats(self):
+  def send_get_chats(self, auth):
     self._oprot.writeMessageBegin('get_chats', TMessageType.CALL, self._seqid)
     args = get_chats_args()
+    args.auth = auth
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.flush()
@@ -66,19 +77,23 @@ class Client(Iface):
     self._iprot.readMessageEnd()
     if result.success is not None:
       return result.success
+    if result.ae is not None:
+      raise result.ae
     raise TApplicationException(TApplicationException.MISSING_RESULT, "get_chats failed: unknown result");
 
-  def get_chat(self, name):
+  def get_chat(self, auth, name):
     """
     Parameters:
+     - auth
      - name
     """
-    self.send_get_chat(name)
+    self.send_get_chat(auth, name)
     return self.recv_get_chat()
 
-  def send_get_chat(self, name):
+  def send_get_chat(self, auth, name):
     self._oprot.writeMessageBegin('get_chat', TMessageType.CALL, self._seqid)
     args = get_chat_args()
+    args.auth = auth
     args.name = name
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
@@ -96,19 +111,23 @@ class Client(Iface):
     self._iprot.readMessageEnd()
     if result.success is not None:
       return result.success
+    if result.ae is not None:
+      raise result.ae
     raise TApplicationException(TApplicationException.MISSING_RESULT, "get_chat failed: unknown result");
 
-  def get_user(self, handle):
+  def get_user(self, auth, handle):
     """
     Parameters:
+     - auth
      - handle
     """
-    self.send_get_user(handle)
+    self.send_get_user(auth, handle)
     return self.recv_get_user()
 
-  def send_get_user(self, handle):
+  def send_get_user(self, auth, handle):
     self._oprot.writeMessageBegin('get_user', TMessageType.CALL, self._seqid)
     args = get_user_args()
+    args.auth = auth
     args.handle = handle
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
@@ -126,6 +145,8 @@ class Client(Iface):
     self._iprot.readMessageEnd()
     if result.success is not None:
       return result.success
+    if result.ae is not None:
+      raise result.ae
     raise TApplicationException(TApplicationException.MISSING_RESULT, "get_user failed: unknown result");
 
 
@@ -157,7 +178,10 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = get_chats_result()
-    result.success = self._handler.get_chats()
+    try:
+      result.success = self._handler.get_chats(args.auth)
+    except AuthenticationException, ae:
+      result.ae = ae
     oprot.writeMessageBegin("get_chats", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -168,7 +192,10 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = get_chat_result()
-    result.success = self._handler.get_chat(args.name)
+    try:
+      result.success = self._handler.get_chat(args.auth, args.name)
+    except AuthenticationException, ae:
+      result.ae = ae
     oprot.writeMessageBegin("get_chat", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -179,7 +206,10 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = get_user_result()
-    result.success = self._handler.get_user(args.handle)
+    try:
+      result.success = self._handler.get_user(args.auth, args.handle)
+    except AuthenticationException, ae:
+      result.ae = ae
     oprot.writeMessageBegin("get_user", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -189,9 +219,18 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 class get_chats_args:
+  """
+  Attributes:
+   - auth
+  """
 
   thrift_spec = (
+    None, # 0
+    (1, TType.STRUCT, 'auth', (Authentication, Authentication.thrift_spec), None, ), # 1
   )
+
+  def __init__(self, auth=None,):
+    self.auth = auth
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -202,6 +241,12 @@ class get_chats_args:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.auth = Authentication()
+          self.auth.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -212,10 +257,16 @@ class get_chats_args:
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('get_chats_args')
+    if self.auth is not None:
+      oprot.writeFieldBegin('auth', TType.STRUCT, 1)
+      self.auth.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
   def validate(self):
+    if self.auth is None:
+      raise TProtocol.TProtocolException(message='Required field auth is unset!')
     return
 
 
@@ -234,14 +285,17 @@ class get_chats_result:
   """
   Attributes:
    - success
+   - ae
   """
 
   thrift_spec = (
     (0, TType.LIST, 'success', (TType.STRUCT,(Chat, Chat.thrift_spec)), None, ), # 0
+    (1, TType.STRUCT, 'ae', (AuthenticationException, AuthenticationException.thrift_spec), None, ), # 1
   )
 
-  def __init__(self, success=None,):
+  def __init__(self, success=None, ae=None,):
     self.success = success
+    self.ae = ae
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -263,6 +317,12 @@ class get_chats_result:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.STRUCT:
+          self.ae = AuthenticationException()
+          self.ae.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -279,6 +339,10 @@ class get_chats_result:
       for iter6 in self.success:
         iter6.write(oprot)
       oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.ae is not None:
+      oprot.writeFieldBegin('ae', TType.STRUCT, 1)
+      self.ae.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -301,15 +365,18 @@ class get_chats_result:
 class get_chat_args:
   """
   Attributes:
+   - auth
    - name
   """
 
   thrift_spec = (
     None, # 0
-    (1, TType.STRING, 'name', None, None, ), # 1
+    (1, TType.STRUCT, 'auth', (Authentication, Authentication.thrift_spec), None, ), # 1
+    (2, TType.STRING, 'name', None, None, ), # 2
   )
 
-  def __init__(self, name=None,):
+  def __init__(self, auth=None, name=None,):
+    self.auth = auth
     self.name = name
 
   def read(self, iprot):
@@ -322,6 +389,12 @@ class get_chat_args:
       if ftype == TType.STOP:
         break
       if fid == 1:
+        if ftype == TType.STRUCT:
+          self.auth = Authentication()
+          self.auth.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
         if ftype == TType.STRING:
           self.name = iprot.readString();
         else:
@@ -336,14 +409,20 @@ class get_chat_args:
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('get_chat_args')
+    if self.auth is not None:
+      oprot.writeFieldBegin('auth', TType.STRUCT, 1)
+      self.auth.write(oprot)
+      oprot.writeFieldEnd()
     if self.name is not None:
-      oprot.writeFieldBegin('name', TType.STRING, 1)
+      oprot.writeFieldBegin('name', TType.STRING, 2)
       oprot.writeString(self.name)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
   def validate(self):
+    if self.auth is None:
+      raise TProtocol.TProtocolException(message='Required field auth is unset!')
     if self.name is None:
       raise TProtocol.TProtocolException(message='Required field name is unset!')
     return
@@ -364,14 +443,17 @@ class get_chat_result:
   """
   Attributes:
    - success
+   - ae
   """
 
   thrift_spec = (
     (0, TType.STRUCT, 'success', (Chat, Chat.thrift_spec), None, ), # 0
+    (1, TType.STRUCT, 'ae', (AuthenticationException, AuthenticationException.thrift_spec), None, ), # 1
   )
 
-  def __init__(self, success=None,):
+  def __init__(self, success=None, ae=None,):
     self.success = success
+    self.ae = ae
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -388,6 +470,12 @@ class get_chat_result:
           self.success.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.STRUCT:
+          self.ae = AuthenticationException()
+          self.ae.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -401,6 +489,10 @@ class get_chat_result:
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.STRUCT, 0)
       self.success.write(oprot)
+      oprot.writeFieldEnd()
+    if self.ae is not None:
+      oprot.writeFieldBegin('ae', TType.STRUCT, 1)
+      self.ae.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -423,15 +515,18 @@ class get_chat_result:
 class get_user_args:
   """
   Attributes:
+   - auth
    - handle
   """
 
   thrift_spec = (
     None, # 0
-    (1, TType.STRING, 'handle', None, None, ), # 1
+    (1, TType.STRUCT, 'auth', (Authentication, Authentication.thrift_spec), None, ), # 1
+    (2, TType.STRING, 'handle', None, None, ), # 2
   )
 
-  def __init__(self, handle=None,):
+  def __init__(self, auth=None, handle=None,):
+    self.auth = auth
     self.handle = handle
 
   def read(self, iprot):
@@ -444,6 +539,12 @@ class get_user_args:
       if ftype == TType.STOP:
         break
       if fid == 1:
+        if ftype == TType.STRUCT:
+          self.auth = Authentication()
+          self.auth.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
         if ftype == TType.STRING:
           self.handle = iprot.readString();
         else:
@@ -458,14 +559,20 @@ class get_user_args:
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('get_user_args')
+    if self.auth is not None:
+      oprot.writeFieldBegin('auth', TType.STRUCT, 1)
+      self.auth.write(oprot)
+      oprot.writeFieldEnd()
     if self.handle is not None:
-      oprot.writeFieldBegin('handle', TType.STRING, 1)
+      oprot.writeFieldBegin('handle', TType.STRING, 2)
       oprot.writeString(self.handle)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
   def validate(self):
+    if self.auth is None:
+      raise TProtocol.TProtocolException(message='Required field auth is unset!')
     if self.handle is None:
       raise TProtocol.TProtocolException(message='Required field handle is unset!')
     return
@@ -486,14 +593,17 @@ class get_user_result:
   """
   Attributes:
    - success
+   - ae
   """
 
   thrift_spec = (
     (0, TType.STRUCT, 'success', (User, User.thrift_spec), None, ), # 0
+    (1, TType.STRUCT, 'ae', (AuthenticationException, AuthenticationException.thrift_spec), None, ), # 1
   )
 
-  def __init__(self, success=None,):
+  def __init__(self, success=None, ae=None,):
     self.success = success
+    self.ae = ae
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -510,6 +620,12 @@ class get_user_result:
           self.success.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.STRUCT:
+          self.ae = AuthenticationException()
+          self.ae.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -523,6 +639,10 @@ class get_user_result:
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.STRUCT, 0)
       self.success.write(oprot)
+      oprot.writeFieldEnd()
+    if self.ae is not None:
+      oprot.writeFieldBegin('ae', TType.STRUCT, 1)
+      self.ae.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

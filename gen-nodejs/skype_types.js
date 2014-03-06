@@ -6,6 +6,59 @@
 var Thrift = require('thrift').Thrift;
 
 var ttypes = module.exports = {};
+Authentication = module.exports.Authentication = function(args) {
+  this.token = null;
+  if (args) {
+    if (args.token !== undefined) {
+      this.token = args.token;
+    }
+  }
+};
+Authentication.prototype = {};
+Authentication.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.token = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Authentication.prototype.write = function(output) {
+  output.writeStructBegin('Authentication');
+  if (this.token !== null && this.token !== undefined) {
+    output.writeFieldBegin('token', Thrift.Type.STRING, 1);
+    output.writeString(this.token);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 Chat = module.exports.Chat = function(args) {
   this.activityTimestamp = null;
   this.blob = null;
@@ -853,6 +906,37 @@ User.prototype.write = function(output) {
     output.writeI32(this.timezone);
     output.writeFieldEnd();
   }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AuthenticationException = module.exports.AuthenticationException = function(args) {
+  Thrift.TException.call(this, "AuthenticationException")
+  this.name = "AuthenticationException"
+};
+Thrift.inherits(AuthenticationException, Thrift.TException);
+AuthenticationException.prototype.name = 'AuthenticationException';
+AuthenticationException.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    input.skip(ftype);
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AuthenticationException.prototype.write = function(output) {
+  output.writeStructBegin('AuthenticationException');
   output.writeFieldStop();
   output.writeStructEnd();
   return;

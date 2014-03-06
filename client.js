@@ -9,6 +9,7 @@ var thrift = require('thrift');
 var ThriftTransports = require('thrift/lib/thrift/transport');
 var ThriftProtocols = require('thrift/lib/thrift/protocol');
 var Skype = require('./gen-nodejs/Skype');
+var ttypes = require('./gen-nodejs/skype_types');
 
 
 var transport = ThriftTransports.TBufferedTransport();
@@ -25,6 +26,10 @@ connection.on('error', function(err) {
 
 var client = thrift.createClient(Skype, connection);
 
-client.get_chats(function(err, chats) {
+var auth = new ttypes.Authentication({
+    token: 'token'
+});
+
+client.get_chats(auth, function(err, chats) {
     console.log(err, chats);
 });

@@ -9,6 +9,12 @@ var ttypes = require('./skype_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
 Skype_get_chats_args = function(args) {
+  this.auth = null;
+  if (args) {
+    if (args.auth !== undefined) {
+      this.auth = args.auth;
+    }
+  }
 };
 Skype_get_chats_args.prototype = {};
 Skype_get_chats_args.prototype.read = function(input) {
@@ -22,7 +28,22 @@ Skype_get_chats_args.prototype.read = function(input) {
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    input.skip(ftype);
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.auth = new ttypes.Authentication();
+        this.auth.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
     input.readFieldEnd();
   }
   input.readStructEnd();
@@ -31,6 +52,11 @@ Skype_get_chats_args.prototype.read = function(input) {
 
 Skype_get_chats_args.prototype.write = function(output) {
   output.writeStructBegin('Skype_get_chats_args');
+  if (this.auth !== null && this.auth !== undefined) {
+    output.writeFieldBegin('auth', Thrift.Type.STRUCT, 1);
+    this.auth.write(output);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -38,9 +64,17 @@ Skype_get_chats_args.prototype.write = function(output) {
 
 Skype_get_chats_result = function(args) {
   this.success = null;
+  this.ae = null;
+  if (args instanceof ttypes.AuthenticationException) {
+    this.ae = args;
+    return;
+  }
   if (args) {
     if (args.success !== undefined) {
       this.success = args.success;
+    }
+    if (args.ae !== undefined) {
+      this.ae = args.ae;
     }
   }
 };
@@ -79,9 +113,14 @@ Skype_get_chats_result.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ae = new ttypes.AuthenticationException();
+        this.ae.read(input);
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -107,14 +146,23 @@ Skype_get_chats_result.prototype.write = function(output) {
     output.writeListEnd();
     output.writeFieldEnd();
   }
+  if (this.ae !== null && this.ae !== undefined) {
+    output.writeFieldBegin('ae', Thrift.Type.STRUCT, 1);
+    this.ae.write(output);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
 Skype_get_chat_args = function(args) {
+  this.auth = null;
   this.name = null;
   if (args) {
+    if (args.auth !== undefined) {
+      this.auth = args.auth;
+    }
     if (args.name !== undefined) {
       this.name = args.name;
     }
@@ -135,15 +183,20 @@ Skype_get_chat_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.auth = new ttypes.Authentication();
+        this.auth.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
       if (ftype == Thrift.Type.STRING) {
         this.name = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
-        input.skip(ftype);
-        break;
       default:
         input.skip(ftype);
     }
@@ -155,8 +208,13 @@ Skype_get_chat_args.prototype.read = function(input) {
 
 Skype_get_chat_args.prototype.write = function(output) {
   output.writeStructBegin('Skype_get_chat_args');
+  if (this.auth !== null && this.auth !== undefined) {
+    output.writeFieldBegin('auth', Thrift.Type.STRUCT, 1);
+    this.auth.write(output);
+    output.writeFieldEnd();
+  }
   if (this.name !== null && this.name !== undefined) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
     output.writeString(this.name);
     output.writeFieldEnd();
   }
@@ -167,9 +225,17 @@ Skype_get_chat_args.prototype.write = function(output) {
 
 Skype_get_chat_result = function(args) {
   this.success = null;
+  this.ae = null;
+  if (args instanceof ttypes.AuthenticationException) {
+    this.ae = args;
+    return;
+  }
   if (args) {
     if (args.success !== undefined) {
       this.success = args.success;
+    }
+    if (args.ae !== undefined) {
+      this.ae = args.ae;
     }
   }
 };
@@ -195,9 +261,14 @@ Skype_get_chat_result.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ae = new ttypes.AuthenticationException();
+        this.ae.read(input);
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -214,14 +285,23 @@ Skype_get_chat_result.prototype.write = function(output) {
     this.success.write(output);
     output.writeFieldEnd();
   }
+  if (this.ae !== null && this.ae !== undefined) {
+    output.writeFieldBegin('ae', Thrift.Type.STRUCT, 1);
+    this.ae.write(output);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
 Skype_get_user_args = function(args) {
+  this.auth = null;
   this.handle = null;
   if (args) {
+    if (args.auth !== undefined) {
+      this.auth = args.auth;
+    }
     if (args.handle !== undefined) {
       this.handle = args.handle;
     }
@@ -242,15 +322,20 @@ Skype_get_user_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.auth = new ttypes.Authentication();
+        this.auth.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
       if (ftype == Thrift.Type.STRING) {
         this.handle = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
-        input.skip(ftype);
-        break;
       default:
         input.skip(ftype);
     }
@@ -262,8 +347,13 @@ Skype_get_user_args.prototype.read = function(input) {
 
 Skype_get_user_args.prototype.write = function(output) {
   output.writeStructBegin('Skype_get_user_args');
+  if (this.auth !== null && this.auth !== undefined) {
+    output.writeFieldBegin('auth', Thrift.Type.STRUCT, 1);
+    this.auth.write(output);
+    output.writeFieldEnd();
+  }
   if (this.handle !== null && this.handle !== undefined) {
-    output.writeFieldBegin('handle', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('handle', Thrift.Type.STRING, 2);
     output.writeString(this.handle);
     output.writeFieldEnd();
   }
@@ -274,9 +364,17 @@ Skype_get_user_args.prototype.write = function(output) {
 
 Skype_get_user_result = function(args) {
   this.success = null;
+  this.ae = null;
+  if (args instanceof ttypes.AuthenticationException) {
+    this.ae = args;
+    return;
+  }
   if (args) {
     if (args.success !== undefined) {
       this.success = args.success;
+    }
+    if (args.ae !== undefined) {
+      this.ae = args.ae;
     }
   }
 };
@@ -302,9 +400,14 @@ Skype_get_user_result.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ae = new ttypes.AuthenticationException();
+        this.ae.read(input);
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -321,6 +424,11 @@ Skype_get_user_result.prototype.write = function(output) {
     this.success.write(output);
     output.writeFieldEnd();
   }
+  if (this.ae !== null && this.ae !== undefined) {
+    output.writeFieldBegin('ae', Thrift.Type.STRUCT, 1);
+    this.ae.write(output);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -333,16 +441,17 @@ SkypeClient = exports.Client = function(output, pClass) {
     this._reqs = {};
 };
 SkypeClient.prototype = {};
-SkypeClient.prototype.get_chats = function(callback) {
+SkypeClient.prototype.get_chats = function(auth, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_get_chats();
+  this.send_get_chats(auth);
 };
 
-SkypeClient.prototype.send_get_chats = function() {
+SkypeClient.prototype.send_get_chats = function(auth) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('get_chats', Thrift.MessageType.CALL, this.seqid);
   var args = new Skype_get_chats_args();
+  args.auth = auth;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -361,21 +470,25 @@ SkypeClient.prototype.recv_get_chats = function(input,mtype,rseqid) {
   result.read(input);
   input.readMessageEnd();
 
+  if (null !== result.ae) {
+    return callback(result.ae);
+  }
   if (null !== result.success) {
     return callback(null, result.success);
   }
   return callback('get_chats failed: unknown result');
 };
-SkypeClient.prototype.get_chat = function(name, callback) {
+SkypeClient.prototype.get_chat = function(auth, name, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_get_chat(name);
+  this.send_get_chat(auth, name);
 };
 
-SkypeClient.prototype.send_get_chat = function(name) {
+SkypeClient.prototype.send_get_chat = function(auth, name) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('get_chat', Thrift.MessageType.CALL, this.seqid);
   var args = new Skype_get_chat_args();
+  args.auth = auth;
   args.name = name;
   args.write(output);
   output.writeMessageEnd();
@@ -395,21 +508,25 @@ SkypeClient.prototype.recv_get_chat = function(input,mtype,rseqid) {
   result.read(input);
   input.readMessageEnd();
 
+  if (null !== result.ae) {
+    return callback(result.ae);
+  }
   if (null !== result.success) {
     return callback(null, result.success);
   }
   return callback('get_chat failed: unknown result');
 };
-SkypeClient.prototype.get_user = function(handle, callback) {
+SkypeClient.prototype.get_user = function(auth, handle, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_get_user(handle);
+  this.send_get_user(auth, handle);
 };
 
-SkypeClient.prototype.send_get_user = function(handle) {
+SkypeClient.prototype.send_get_user = function(auth, handle) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('get_user', Thrift.MessageType.CALL, this.seqid);
   var args = new Skype_get_user_args();
+  args.auth = auth;
   args.handle = handle;
   args.write(output);
   output.writeMessageEnd();
@@ -429,6 +546,9 @@ SkypeClient.prototype.recv_get_user = function(input,mtype,rseqid) {
   result.read(input);
   input.readMessageEnd();
 
+  if (null !== result.ae) {
+    return callback(result.ae);
+  }
   if (null !== result.success) {
     return callback(null, result.success);
   }
@@ -456,7 +576,7 @@ SkypeProcessor.prototype.process_get_chats = function(seqid, input, output) {
   var args = new Skype_get_chats_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.get_chats(function (err, result) {
+  this._handler.get_chats(args.auth, function (err, result) {
     var result = new Skype_get_chats_result((err != null ? err : {success: result}));
     output.writeMessageBegin("get_chats", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -469,7 +589,7 @@ SkypeProcessor.prototype.process_get_chat = function(seqid, input, output) {
   var args = new Skype_get_chat_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.get_chat(args.name, function (err, result) {
+  this._handler.get_chat(args.auth, args.name, function (err, result) {
     var result = new Skype_get_chat_result((err != null ? err : {success: result}));
     output.writeMessageBegin("get_chat", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -482,7 +602,7 @@ SkypeProcessor.prototype.process_get_user = function(seqid, input, output) {
   var args = new Skype_get_user_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.get_user(args.handle, function (err, result) {
+  this._handler.get_user(args.auth, args.handle, function (err, result) {
     var result = new Skype_get_user_result((err != null ? err : {success: result}));
     output.writeMessageBegin("get_user", Thrift.MessageType.REPLY, seqid);
     result.write(output);

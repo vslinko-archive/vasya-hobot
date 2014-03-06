@@ -5,6 +5,11 @@
  * Licensed under the MIT License
  */
 
+struct Authentication {
+    1: required string token
+}
+
+
 struct Chat {
     # activeMembers
     # activityDatetime
@@ -75,8 +80,18 @@ struct User {
 }
 
 
+exception AuthenticationException {}
+
+
 service Skype {
-    list<Chat> get_chats()
-    Chat get_chat(1:required string name)
-    User get_user(1:required string handle)
+    list<Chat> get_chats(1:required Authentication auth)
+               throws (1:AuthenticationException ae),
+
+    Chat get_chat(1:required Authentication auth,
+                  2:required string name)
+         throws (1:AuthenticationException ae),
+
+    User get_user(1:required Authentication auth,
+                  2:required string handle)
+         throws (1:AuthenticationException ae)
 }
