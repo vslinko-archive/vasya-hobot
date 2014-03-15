@@ -58,7 +58,7 @@ def main():
     tfactory = TTransport.TBufferedTransportFactory()
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
-    server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
+    server = TServer.TThreadedServer(processor, transport, tfactory, pfactory, daemon=True)
 
     print("thrift_server: Attaching to Skype")
     skype.Attach()
