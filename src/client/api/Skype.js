@@ -434,6 +434,161 @@ Skype_get_user_result.prototype.write = function(output) {
   return;
 };
 
+Skype_send_message_args = function(args) {
+  this.auth = null;
+  this.chatName = null;
+  this.messageBody = null;
+  if (args) {
+    if (args.auth !== undefined) {
+      this.auth = args.auth;
+    }
+    if (args.chatName !== undefined) {
+      this.chatName = args.chatName;
+    }
+    if (args.messageBody !== undefined) {
+      this.messageBody = args.messageBody;
+    }
+  }
+};
+Skype_send_message_args.prototype = {};
+Skype_send_message_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.auth = new ttypes.Authentication();
+        this.auth.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.chatName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.messageBody = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Skype_send_message_args.prototype.write = function(output) {
+  output.writeStructBegin('Skype_send_message_args');
+  if (this.auth !== null && this.auth !== undefined) {
+    output.writeFieldBegin('auth', Thrift.Type.STRUCT, 1);
+    this.auth.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.chatName !== null && this.chatName !== undefined) {
+    output.writeFieldBegin('chatName', Thrift.Type.STRING, 2);
+    output.writeString(this.chatName);
+    output.writeFieldEnd();
+  }
+  if (this.messageBody !== null && this.messageBody !== undefined) {
+    output.writeFieldBegin('messageBody', Thrift.Type.STRING, 3);
+    output.writeString(this.messageBody);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Skype_send_message_result = function(args) {
+  this.success = null;
+  this.ae = null;
+  if (args instanceof ttypes.AuthenticationException) {
+    this.ae = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+    if (args.ae !== undefined) {
+      this.ae = args.ae;
+    }
+  }
+};
+Skype_send_message_result.prototype = {};
+Skype_send_message_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.Message();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ae = new ttypes.AuthenticationException();
+        this.ae.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Skype_send_message_result.prototype.write = function(output) {
+  output.writeStructBegin('Skype_send_message_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.ae !== null && this.ae !== undefined) {
+    output.writeFieldBegin('ae', Thrift.Type.STRUCT, 1);
+    this.ae.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 SkypeClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -554,6 +709,45 @@ SkypeClient.prototype.recv_get_user = function(input,mtype,rseqid) {
   }
   return callback('get_user failed: unknown result');
 };
+SkypeClient.prototype.send_message = function(auth, chatName, messageBody, callback) {
+  this.seqid += 1;
+  this._reqs[this.seqid] = callback;
+  this.send_send_message(auth, chatName, messageBody);
+};
+
+SkypeClient.prototype.send_send_message = function(auth, chatName, messageBody) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('send_message', Thrift.MessageType.CALL, this.seqid);
+  var args = new Skype_send_message_args();
+  args.auth = auth;
+  args.chatName = chatName;
+  args.messageBody = messageBody;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+SkypeClient.prototype.recv_send_message = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new Skype_send_message_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ae) {
+    return callback(result.ae);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('send_message failed: unknown result');
+};
 SkypeProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -605,6 +799,19 @@ SkypeProcessor.prototype.process_get_user = function(seqid, input, output) {
   this._handler.get_user(args.auth, args.handle, function (err, result) {
     var result = new Skype_get_user_result((err != null ? err : {success: result}));
     output.writeMessageBegin("get_user", Thrift.MessageType.REPLY, seqid);
+    result.write(output);
+    output.writeMessageEnd();
+    output.flush();
+  })
+}
+
+SkypeProcessor.prototype.process_send_message = function(seqid, input, output) {
+  var args = new Skype_send_message_args();
+  args.read(input);
+  input.readMessageEnd();
+  this._handler.send_message(args.auth, args.chatName, args.messageBody, function (err, result) {
+    var result = new Skype_send_message_result((err != null ? err : {success: result}));
+    output.writeMessageBegin("send_message", Thrift.MessageType.REPLY, seqid);
     result.write(output);
     output.writeMessageEnd();
     output.flush();

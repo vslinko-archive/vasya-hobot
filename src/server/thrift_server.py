@@ -39,6 +39,11 @@ class SkypeHandler:
     self._check_auth(auth)
     return mappers.remap_user_object(self.skype.User(handle))
 
+  def send_message(self, auth, chat_name, message_body):
+    self._check_auth(auth)
+    chat = self.skype.Chat(chat_name)
+    return mappers.remap_message_object(chat.SendMessage(message_body))
+
   def _check_auth(self, auth):
     if auth.token != os.environ['VASYA_TOKEN']:
         raise AuthenticationException()

@@ -26,6 +26,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print '   get_chats(Authentication auth)'
   print '  Chat get_chat(Authentication auth, string name)'
   print '  User get_user(Authentication auth, string handle)'
+  print '  Message send_message(Authentication auth, string chatName, string messageBody)'
   print ''
   sys.exit(0)
 
@@ -94,6 +95,12 @@ elif cmd == 'get_user':
     print 'get_user requires 2 args'
     sys.exit(1)
   pp.pprint(client.get_user(eval(args[0]),args[1],))
+
+elif cmd == 'send_message':
+  if len(args) != 3:
+    print 'send_message requires 3 args'
+    sys.exit(1)
+  pp.pprint(client.send_message(eval(args[0]),args[1],args[2],))
 
 else:
   print 'Unrecognized method %s' % cmd

@@ -114,5 +114,10 @@ service Skype {
 
     User get_user(1:required Authentication auth,
                   2:required string handle)
-         throws (1:AuthenticationException ae)
+         throws (1:AuthenticationException ae),
+
+    Message send_message(1:required Authentication auth,
+                         2:required string chatName,
+                         3:required string messageBody)
+            throws (1:AuthenticationException ae)
 }
