@@ -54,7 +54,7 @@ def main():
 
     handler = SkypeHandler(skype)
     processor = Skype.Processor(handler)
-    transport = TSocket.TServerSocket(port=9090)
+    transport = TSocket.TServerSocket(host='0.0.0.0', port=9090)
     tfactory = TTransport.TBufferedTransportFactory()
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 

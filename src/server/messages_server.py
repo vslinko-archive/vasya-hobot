@@ -82,7 +82,7 @@ class MessagesServer(asyncore.dispatcher):
 def main():
     skype = helpers.init_skype4py()
 
-    server = MessagesServer(('', 9091))
+    server = MessagesServer(('0.0.0.0', 9091))
 
     def on_message(message, status):
         msg = mappers.remap_message_object(message)
