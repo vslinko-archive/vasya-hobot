@@ -22,13 +22,12 @@ function SkypeClient(config) {
     this._config = {
         thriftServerTransport: config.thriftServerTransport || ThriftTransports.TBufferedTransport,
         thriftServerProtocol: config.thriftServerProtocol || ThriftProtocols.TBinaryProtocol,
-        thriftServerHost: config.thriftServerHost || 'localhost',
         thriftServerPort: config.thriftServerPort || 9090,
         messagesServerPort: config.messagesServerPort || 9091,
-        messagesServerHost: config.messagesServerHost || 'localhost',
         messagesServerProtocol: config.messagesServerProtocol || ThriftProtocols.TBinaryProtocol,
         messagesServerBufferLengt: config.messagesServerBufferLength || (1024 * 1024),
-        token: config.token || ''
+        token: config.token || '',
+        host: config.host || 'localhost'
     };
 
     this._initAuthToken();
@@ -53,7 +52,7 @@ SkypeClient.prototype._initClient = function() {
     var thriftServerProtocol = this._config.thriftServerProtocol();
 
     var thriftServerConnection = thrift.createConnection(
-        this._config.thriftServerHost,
+        this._config.host,
         this._config.thriftServerPort,
         {transport: thriftServerTransport, protocol: thriftServerProtocol}
     );
@@ -66,7 +65,7 @@ SkypeClient.prototype._initReader = function() {
     this._reader = new ThriftSocketReader(
         ttypes.Message,
         this._config.messagesServerPort,
-        this._config.messagesServerHost,
+        this._config.host,
         this._config.token,
         this._config.messagesServerProtocol,
         this._config.messagesServerBufferLength

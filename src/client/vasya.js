@@ -9,7 +9,8 @@ var SkypeClient = require('./SkypeClient');
 
 
 var skypeClient = new SkypeClient({
-    token: process.env.VASYA_TOKEN || 'token'
+    token: process.env.VASYA_TOKEN || 'token',
+    host: process.env.VASYA_HOST || 'localhost'
 });
 
 skypeClient.getUser('vyacheslav.slinko', function(err, chats) {
