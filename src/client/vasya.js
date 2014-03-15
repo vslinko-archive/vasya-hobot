@@ -5,7 +5,11 @@
  * Licensed under the MIT License
  */
 
+var path = require('path');
+var fs = require('fs');
+
 var SkypeClient = require('./SkypeClient');
+var VasyaHobot = require('./VasyaHobot');
 
 
 var skypeClient = new SkypeClient({
@@ -13,14 +17,10 @@ var skypeClient = new SkypeClient({
     host: process.env.VASYA_HOST || 'localhost'
 });
 
-skypeClient.getUser('vyacheslav.slinko', function(err, chats) {
-    console.log(err, chats);
-});
+var vasyaHobot = new VasyaHobot(skypeClient);
 
-skypeClient.on('message', function(message) {
-    console.log(message);
-});
+var pluginsDir = path.join(__dirname, 'plugins');
 
-skypeClient.on('error', function(err) {
-    console.log(err);
+fs.readdirSync(pluginsDir).forEach(function(pluginFilename) {
+    vasyaHobot.registerPlugin(require(path.join(pluginsDir, pluginFilename)));
 });
