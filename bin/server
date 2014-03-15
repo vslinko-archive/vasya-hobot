@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+# Vasya Hobot
+#
+# Copyright (c) 2013-2014 Vyacheslav Slinko
+# Licensed under the MIT License
+
+import os
+import sys
+import multiprocessing
+import subprocess
+
+
+def worker(script):
+    if 'PYTHON_BIN' in os.environ:
+        python_bin = os.environ['PYTHON_BIN']
+    else:
+        python_bin = sys.executable
+
+    script_path = os.path.join(os.path.dirname(__file__), '..', 'src', 'server', script)
+
+    subprocess.call([python_bin, script_path])
+
+
+def main():
+    thrift_server = multiprocessing.Process(target=worker, args=['thrift_server.py'])
+    messages_server = multiprocessing.Process(target=worker, args=['messages_server.py'])
+
+    thrift_server.start()
+    messages_server.start()
+
+
+if __name__ == '__main__':
+    main()

@@ -1084,6 +1084,305 @@ Chat.prototype.write = function(output) {
   return;
 };
 
+Message = module.exports.Message = function(args) {
+  this.body = null;
+  this.chat = null;
+  this.chatName = null;
+  this.editedBy = null;
+  this.editedTimestamp = null;
+  this.fromDisplayName = null;
+  this.fromHandle = null;
+  this.id = null;
+  this.isEditable = null;
+  this.leaveReason = null;
+  this.sender = null;
+  this.status = null;
+  this.timestamp = null;
+  this.type = null;
+  this.users = null;
+  if (args) {
+    if (args.body !== undefined) {
+      this.body = args.body;
+    }
+    if (args.chat !== undefined) {
+      this.chat = args.chat;
+    }
+    if (args.chatName !== undefined) {
+      this.chatName = args.chatName;
+    }
+    if (args.editedBy !== undefined) {
+      this.editedBy = args.editedBy;
+    }
+    if (args.editedTimestamp !== undefined) {
+      this.editedTimestamp = args.editedTimestamp;
+    }
+    if (args.fromDisplayName !== undefined) {
+      this.fromDisplayName = args.fromDisplayName;
+    }
+    if (args.fromHandle !== undefined) {
+      this.fromHandle = args.fromHandle;
+    }
+    if (args.id !== undefined) {
+      this.id = args.id;
+    }
+    if (args.isEditable !== undefined) {
+      this.isEditable = args.isEditable;
+    }
+    if (args.leaveReason !== undefined) {
+      this.leaveReason = args.leaveReason;
+    }
+    if (args.sender !== undefined) {
+      this.sender = args.sender;
+    }
+    if (args.status !== undefined) {
+      this.status = args.status;
+    }
+    if (args.timestamp !== undefined) {
+      this.timestamp = args.timestamp;
+    }
+    if (args.type !== undefined) {
+      this.type = args.type;
+    }
+    if (args.users !== undefined) {
+      this.users = args.users;
+    }
+  }
+};
+Message.prototype = {};
+Message.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.body = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.chat = new ttypes.Chat();
+        this.chat.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.chatName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.editedBy = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I32) {
+        this.editedTimestamp = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.fromDisplayName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.fromHandle = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.I32) {
+        this.id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.BOOL) {
+        this.isEditable = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.STRING) {
+        this.leaveReason = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 13:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.sender = new ttypes.User();
+        this.sender.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.STRING) {
+        this.status = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 15:
+      if (ftype == Thrift.Type.I32) {
+        this.timestamp = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 16:
+      if (ftype == Thrift.Type.STRING) {
+        this.type = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 17:
+      if (ftype == Thrift.Type.LIST) {
+        var _size32 = 0;
+        var _rtmp336;
+        this.users = [];
+        var _etype35 = 0;
+        _rtmp336 = input.readListBegin();
+        _etype35 = _rtmp336.etype;
+        _size32 = _rtmp336.size;
+        for (var _i37 = 0; _i37 < _size32; ++_i37)
+        {
+          var elem38 = null;
+          elem38 = new ttypes.User();
+          elem38.read(input);
+          this.users.push(elem38);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Message.prototype.write = function(output) {
+  output.writeStructBegin('Message');
+  if (this.body !== null && this.body !== undefined) {
+    output.writeFieldBegin('body', Thrift.Type.STRING, 1);
+    output.writeString(this.body);
+    output.writeFieldEnd();
+  }
+  if (this.chat !== null && this.chat !== undefined) {
+    output.writeFieldBegin('chat', Thrift.Type.STRUCT, 2);
+    this.chat.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.chatName !== null && this.chatName !== undefined) {
+    output.writeFieldBegin('chatName', Thrift.Type.STRING, 3);
+    output.writeString(this.chatName);
+    output.writeFieldEnd();
+  }
+  if (this.editedBy !== null && this.editedBy !== undefined) {
+    output.writeFieldBegin('editedBy', Thrift.Type.STRING, 5);
+    output.writeString(this.editedBy);
+    output.writeFieldEnd();
+  }
+  if (this.editedTimestamp !== null && this.editedTimestamp !== undefined) {
+    output.writeFieldBegin('editedTimestamp', Thrift.Type.I32, 7);
+    output.writeI32(this.editedTimestamp);
+    output.writeFieldEnd();
+  }
+  if (this.fromDisplayName !== null && this.fromDisplayName !== undefined) {
+    output.writeFieldBegin('fromDisplayName', Thrift.Type.STRING, 8);
+    output.writeString(this.fromDisplayName);
+    output.writeFieldEnd();
+  }
+  if (this.fromHandle !== null && this.fromHandle !== undefined) {
+    output.writeFieldBegin('fromHandle', Thrift.Type.STRING, 9);
+    output.writeString(this.fromHandle);
+    output.writeFieldEnd();
+  }
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I32, 10);
+    output.writeI32(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.isEditable !== null && this.isEditable !== undefined) {
+    output.writeFieldBegin('isEditable', Thrift.Type.BOOL, 11);
+    output.writeBool(this.isEditable);
+    output.writeFieldEnd();
+  }
+  if (this.leaveReason !== null && this.leaveReason !== undefined) {
+    output.writeFieldBegin('leaveReason', Thrift.Type.STRING, 12);
+    output.writeString(this.leaveReason);
+    output.writeFieldEnd();
+  }
+  if (this.sender !== null && this.sender !== undefined) {
+    output.writeFieldBegin('sender', Thrift.Type.STRUCT, 13);
+    this.sender.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRING, 14);
+    output.writeString(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.timestamp !== null && this.timestamp !== undefined) {
+    output.writeFieldBegin('timestamp', Thrift.Type.I32, 15);
+    output.writeI32(this.timestamp);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.STRING, 16);
+    output.writeString(this.type);
+    output.writeFieldEnd();
+  }
+  if (this.users !== null && this.users !== undefined) {
+    output.writeFieldBegin('users', Thrift.Type.LIST, 17);
+    output.writeListBegin(Thrift.Type.STRUCT, this.users.length);
+    for (var iter39 in this.users)
+    {
+      if (this.users.hasOwnProperty(iter39))
+      {
+        iter39 = this.users[iter39];
+        iter39.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 AuthenticationException = module.exports.AuthenticationException = function(args) {
   Thrift.TException.call(this, "AuthenticationException")
   this.name = "AuthenticationException"

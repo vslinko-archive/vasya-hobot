@@ -981,6 +981,277 @@ class Chat:
   def __ne__(self, other):
     return not (self == other)
 
+class Message:
+  """
+  Attributes:
+   - body
+   - chat
+   - chatName
+   - editedBy
+   - editedTimestamp
+   - fromDisplayName
+   - fromHandle
+   - id
+   - isEditable
+   - leaveReason
+   - sender
+   - status
+   - timestamp
+   - type
+   - users
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRING, 'body', None, None, ), # 1
+    (2, TType.STRUCT, 'chat', (Chat, Chat.thrift_spec), None, ), # 2
+    (3, TType.STRING, 'chatName', None, None, ), # 3
+    None, # 4
+    (5, TType.STRING, 'editedBy', None, None, ), # 5
+    None, # 6
+    (7, TType.I32, 'editedTimestamp', None, None, ), # 7
+    (8, TType.STRING, 'fromDisplayName', None, None, ), # 8
+    (9, TType.STRING, 'fromHandle', None, None, ), # 9
+    (10, TType.I32, 'id', None, None, ), # 10
+    (11, TType.BOOL, 'isEditable', None, None, ), # 11
+    (12, TType.STRING, 'leaveReason', None, None, ), # 12
+    (13, TType.STRUCT, 'sender', (User, User.thrift_spec), None, ), # 13
+    (14, TType.STRING, 'status', None, None, ), # 14
+    (15, TType.I32, 'timestamp', None, None, ), # 15
+    (16, TType.STRING, 'type', None, None, ), # 16
+    (17, TType.LIST, 'users', (TType.STRUCT,(User, User.thrift_spec)), None, ), # 17
+  )
+
+  def __init__(self, body=None, chat=None, chatName=None, editedBy=None, editedTimestamp=None, fromDisplayName=None, fromHandle=None, id=None, isEditable=None, leaveReason=None, sender=None, status=None, timestamp=None, type=None, users=None,):
+    self.body = body
+    self.chat = chat
+    self.chatName = chatName
+    self.editedBy = editedBy
+    self.editedTimestamp = editedTimestamp
+    self.fromDisplayName = fromDisplayName
+    self.fromHandle = fromHandle
+    self.id = id
+    self.isEditable = isEditable
+    self.leaveReason = leaveReason
+    self.sender = sender
+    self.status = status
+    self.timestamp = timestamp
+    self.type = type
+    self.users = users
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.body = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.chat = Chat()
+          self.chat.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRING:
+          self.chatName = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.STRING:
+          self.editedBy = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.I32:
+          self.editedTimestamp = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.STRING:
+          self.fromDisplayName = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRING:
+          self.fromHandle = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.I32:
+          self.id = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.BOOL:
+          self.isEditable = iprot.readBool();
+        else:
+          iprot.skip(ftype)
+      elif fid == 12:
+        if ftype == TType.STRING:
+          self.leaveReason = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 13:
+        if ftype == TType.STRUCT:
+          self.sender = User()
+          self.sender.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 14:
+        if ftype == TType.STRING:
+          self.status = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 15:
+        if ftype == TType.I32:
+          self.timestamp = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 16:
+        if ftype == TType.STRING:
+          self.type = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 17:
+        if ftype == TType.LIST:
+          self.users = []
+          (_etype31, _size28) = iprot.readListBegin()
+          for _i32 in xrange(_size28):
+            _elem33 = User()
+            _elem33.read(iprot)
+            self.users.append(_elem33)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('Message')
+    if self.body is not None:
+      oprot.writeFieldBegin('body', TType.STRING, 1)
+      oprot.writeString(self.body)
+      oprot.writeFieldEnd()
+    if self.chat is not None:
+      oprot.writeFieldBegin('chat', TType.STRUCT, 2)
+      self.chat.write(oprot)
+      oprot.writeFieldEnd()
+    if self.chatName is not None:
+      oprot.writeFieldBegin('chatName', TType.STRING, 3)
+      oprot.writeString(self.chatName)
+      oprot.writeFieldEnd()
+    if self.editedBy is not None:
+      oprot.writeFieldBegin('editedBy', TType.STRING, 5)
+      oprot.writeString(self.editedBy)
+      oprot.writeFieldEnd()
+    if self.editedTimestamp is not None:
+      oprot.writeFieldBegin('editedTimestamp', TType.I32, 7)
+      oprot.writeI32(self.editedTimestamp)
+      oprot.writeFieldEnd()
+    if self.fromDisplayName is not None:
+      oprot.writeFieldBegin('fromDisplayName', TType.STRING, 8)
+      oprot.writeString(self.fromDisplayName)
+      oprot.writeFieldEnd()
+    if self.fromHandle is not None:
+      oprot.writeFieldBegin('fromHandle', TType.STRING, 9)
+      oprot.writeString(self.fromHandle)
+      oprot.writeFieldEnd()
+    if self.id is not None:
+      oprot.writeFieldBegin('id', TType.I32, 10)
+      oprot.writeI32(self.id)
+      oprot.writeFieldEnd()
+    if self.isEditable is not None:
+      oprot.writeFieldBegin('isEditable', TType.BOOL, 11)
+      oprot.writeBool(self.isEditable)
+      oprot.writeFieldEnd()
+    if self.leaveReason is not None:
+      oprot.writeFieldBegin('leaveReason', TType.STRING, 12)
+      oprot.writeString(self.leaveReason)
+      oprot.writeFieldEnd()
+    if self.sender is not None:
+      oprot.writeFieldBegin('sender', TType.STRUCT, 13)
+      self.sender.write(oprot)
+      oprot.writeFieldEnd()
+    if self.status is not None:
+      oprot.writeFieldBegin('status', TType.STRING, 14)
+      oprot.writeString(self.status)
+      oprot.writeFieldEnd()
+    if self.timestamp is not None:
+      oprot.writeFieldBegin('timestamp', TType.I32, 15)
+      oprot.writeI32(self.timestamp)
+      oprot.writeFieldEnd()
+    if self.type is not None:
+      oprot.writeFieldBegin('type', TType.STRING, 16)
+      oprot.writeString(self.type)
+      oprot.writeFieldEnd()
+    if self.users is not None:
+      oprot.writeFieldBegin('users', TType.LIST, 17)
+      oprot.writeListBegin(TType.STRUCT, len(self.users))
+      for iter34 in self.users:
+        iter34.write(oprot)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    if self.body is None:
+      raise TProtocol.TProtocolException(message='Required field body is unset!')
+    if self.chat is None:
+      raise TProtocol.TProtocolException(message='Required field chat is unset!')
+    if self.chatName is None:
+      raise TProtocol.TProtocolException(message='Required field chatName is unset!')
+    if self.editedBy is None:
+      raise TProtocol.TProtocolException(message='Required field editedBy is unset!')
+    if self.editedTimestamp is None:
+      raise TProtocol.TProtocolException(message='Required field editedTimestamp is unset!')
+    if self.fromDisplayName is None:
+      raise TProtocol.TProtocolException(message='Required field fromDisplayName is unset!')
+    if self.fromHandle is None:
+      raise TProtocol.TProtocolException(message='Required field fromHandle is unset!')
+    if self.id is None:
+      raise TProtocol.TProtocolException(message='Required field id is unset!')
+    if self.isEditable is None:
+      raise TProtocol.TProtocolException(message='Required field isEditable is unset!')
+    if self.leaveReason is None:
+      raise TProtocol.TProtocolException(message='Required field leaveReason is unset!')
+    if self.sender is None:
+      raise TProtocol.TProtocolException(message='Required field sender is unset!')
+    if self.status is None:
+      raise TProtocol.TProtocolException(message='Required field status is unset!')
+    if self.timestamp is None:
+      raise TProtocol.TProtocolException(message='Required field timestamp is unset!')
+    if self.type is None:
+      raise TProtocol.TProtocolException(message='Required field type is unset!')
+    if self.users is None:
+      raise TProtocol.TProtocolException(message='Required field users is unset!')
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
 class AuthenticationException(TException):
 
   thrift_spec = (

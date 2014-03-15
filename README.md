@@ -8,7 +8,7 @@
 git clone https://github.com/vslinko/vasya-hobot.git
 cd vasya-hobot
 pip install -r requirements.txt
-python server.py
+./bin/server
 ```
 
 ### Client
@@ -17,5 +17,5 @@ python server.py
 git clone https://github.com/vslinko/vasya-hobot.git
 cd vasya-hobot
 npm install
-node client.js
+./bin/client
 ```

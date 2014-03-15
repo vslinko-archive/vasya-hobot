@@ -80,6 +80,27 @@ struct Chat {
 }
 
 
+struct Message {
+    1: required string body,
+    2: required Chat chat,
+    3: required string chatName,
+    # datetime
+    5: required string editedBy,
+    # editedDatetime
+    7: required i32 editedTimestamp,
+    8: required string fromDisplayName,
+    9: required string fromHandle,
+    10: required i32 id,
+    11: required bool isEditable,
+    12: required string leaveReason,
+    13: required User sender,
+    14: required string status,
+    15: required i32 timestamp,
+    16: required string type,
+    17: required list<User> users
+}
+
+
 exception AuthenticationException {}
 
 
