@@ -4,6 +4,7 @@
 # Licensed under the MIT License
 
 import argparse
+import os
 
 import Skype4Py
 
@@ -39,7 +40,7 @@ class SkypeHandler:
     return mappers.remap_user_object(self.skype.User(handle))
 
   def _check_auth(self, auth):
-    if auth.token != "token":
+    if auth.token != os.environ['VASYA_TOKEN']:
         raise AuthenticationException()
 
 

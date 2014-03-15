@@ -17,8 +17,9 @@ var UINT32_LENGTH = 4;
 var MEGABYTE = 1024 * 1024;
 
 
-function ThriftSocketReader(struct, port, host, protocol, bufferLength) {
+function ThriftSocketReader(struct, port, host, token, protocol, bufferLength) {
     this._connection = net.createConnection(port || 9091, host || 'localhost');
+    this._token = token;
     this._struct = struct;
     this._protocol = protocol || ThriftProtocols.TBinaryProtocol;
     this._bufferLength = bufferLength || MEGABYTE;
@@ -29,10 +30,20 @@ function ThriftSocketReader(struct, port, host, protocol, bufferLength) {
 
     this._connection.on('data', this._receiveData.bind(this));
     this._connection.on('error', this.emit.bind(this, 'error'));
+
+    this._sendToken();
 }
 
 
 util.inherits(ThriftSocketReader, events.EventEmitter);
+
+
+ThriftSocketReader.prototype._sendToken = function() {
+    var token = new Buffer(this._token.length + 1);
+    token.write(this._token);
+    token.write('\0', this._token.length);
+    this._connection.write(token);
+};
 
 
 ThriftSocketReader.prototype._receiveData = function(data) {

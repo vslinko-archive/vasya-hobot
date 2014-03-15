@@ -18,7 +18,11 @@ def worker(script):
 
     script_path = os.path.join(os.path.dirname(__file__), '..', 'src', 'server', script)
 
-    subprocess.call([python_bin, script_path])
+    env = os.environ.copy()
+    if 'VASYA_TOKEN' not in env:
+        env['VASYA_TOKEN'] = 'token'
+
+    subprocess.call([python_bin, script_path], env=env)
 
 
 def main():

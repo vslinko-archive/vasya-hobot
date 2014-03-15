@@ -67,6 +67,7 @@ SkypeClient.prototype._initReader = function() {
         ttypes.Message,
         this._config.messagesServerPort,
         this._config.messagesServerHost,
+        this._config.token,
         this._config.messagesServerProtocol,
         this._config.messagesServerBufferLength
     );
