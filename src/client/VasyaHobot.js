@@ -8,6 +8,7 @@
 function VasyaHobot(skypeClient) {
     this._skypeClient = skypeClient;
     this._help = [];
+    this._listeners = [];
     this._commands = [];
 
     this._nameRegexps = VasyaHobot.names.map(function(name) {
@@ -49,6 +50,11 @@ VasyaHobot.prototype.getHelp = function() {
 };
 
 
+VasyaHobot.prototype.registerListener = function(regexps, handler) {
+    this._listeners.push([regexps, handler])
+};
+
+
 VasyaHobot.prototype.registerCommand = function(regexps, handler) {
     this._commands.push([regexps, handler]);
 };
@@ -64,6 +70,10 @@ VasyaHobot.prototype._handleMessage = function(message) {
         return;
     }
 
+    this._searchListeners(message.body).forEach(function(listener) {
+        listener(message);
+    });
+
     var body = this._parseBody(message);
     if (!body) return;
 
@@ -71,6 +81,29 @@ VasyaHobot.prototype._handleMessage = function(message) {
     if (!command) return;
 
     command(message);
+};
+
+
+VasyaHobot.prototype._searchListeners = function(body) {
+    var listeners = [],
+        vasyaHobot = this;
+
+    this._listeners.forEach(function(listener) {
+        var regexps = listener[0],
+            handler = listener[1];
+
+        regexps.some(function(regexp) {
+            if (regexp.test(body)) {
+                var listenerHandler = vasyaHobot._wrapHandler(regexp, body, handler);
+                listeners.push(listenerHandler);
+                return true;
+            }
+
+            return false;
+        });
+    });
+
+    return listeners;
 };
 
 
@@ -100,15 +133,7 @@ VasyaHobot.prototype._searchCommand = function(body) {
 
         return !regexps.some(function(regexp) {
             if (regexp.test(body)) {
-                var matches = regexp.exec(body);
-
-                commandHandler = function(message) {
-                    var args = matches.slice(1);
-                    args.push(message);
-
-                    handler.apply(vasyaHobot, args);
-                };
-
+                commandHandler = vasyaHobot._wrapHandler(regexp, body, handler);
                 return true;
             }
 
@@ -117,6 +142,35 @@ VasyaHobot.prototype._searchCommand = function(body) {
     });
 
     return commandHandler;
+};
+
+
+VasyaHobot.prototype._wrapHandler = function(regexp, body, handler) {
+    var args;
+
+    regexp = new RegExp(regexp);
+
+    if (regexp.global) {
+        var matches = [];
+
+        while (true) {
+            var match = regexp.exec(body);
+
+            if (match === null) {
+                break;
+            }
+
+            matches.push(match[1]);
+        }
+
+        args = [matches];
+    } else {
+        args = regexp.exec(body).slice(1);
+    }
+
+    return function(message) {
+        handler.apply(this, args.concat([message]));
+    }.bind(this);
 };
 
 

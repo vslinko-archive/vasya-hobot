@@ -2,7 +2,8 @@
     "name": "vasya-hobot",
     "version": "0.1.0",
     "dependencies": {
-        "thrift": "^0.9"
+        "thrift": "^0.9",
+        "request": "^2.34"
     },
     "private": true
 }
