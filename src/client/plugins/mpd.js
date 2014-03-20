@@ -5,6 +5,7 @@
  * Licensed under the MIT License
  */
 
+var vkontakte = require('vkontakte');
 var async = require('async');
 var mpd = require('mpd');
 
@@ -17,7 +18,7 @@ module.exports = function(vasyaHobot) {
 
     client.on('ready', function() {
         vasyaHobot.registerHelp('Вася, выключи музыку');
-        vasyaHobot.registerHelp('Вася, играй SONG_URL');
+        vasyaHobot.registerHelp('Вася, играй ссылку SONG_URL');
 
         vasyaHobot.registerCommand([
             /^выключи музыку$/,
@@ -33,8 +34,8 @@ module.exports = function(vasyaHobot) {
         });
 
         vasyaHobot.registerCommand([
-            /^играй (.*)$/,
-            /^play (.*)$/
+            /^играй ссылку (.*)$/,
+            /^play url (.*)$/
         ], function(url, message) {
             async.series([
                 client.sendCommand.bind(client, mpd.cmd("stop", [])),
@@ -49,5 +50,46 @@ module.exports = function(vasyaHobot) {
                 vasyaHobot.replyTo(message, reply);
             });
         });
+
+        if (process.env.VASYA_VK_ACCESS_KEY) {
+            var vk = vkontakte(process.env.VASYA_VK_ACCESS_KEY);
+
+            vasyaHobot.registerHelp('Вася, играй SEARCH_QUERY');
+
+            vasyaHobot.registerCommand([
+                /^играй (.*)$/,
+                /^play (.*)$/
+            ], function(query, message) {
+                vk('audio.search', {q: query}, function(err, res) {
+                    if (err) {
+                        return vasyaHobot.replyTo(message, 'не смог найти ' + query + ' в vk');
+                    }
+
+                    res = res.filter(function(t) {
+                        return t.url;
+                    });
+
+                    vasyaHobot.replyTo(message, res.map(function(t) {
+                        return t.artist + ' - ' + t.title;
+                    }).join('\n'));
+
+                    var commands = res.map(function(track) {
+                        return client.sendCommand.bind(client, mpd.cmd("add", [track.url]));
+                    });
+
+                    commands.unshift(client.sendCommand.bind(client, mpd.cmd("stop", [])));
+                    commands.unshift(client.sendCommand.bind(client, mpd.cmd("clear", [])));
+                    commands.push(client.sendCommand.bind(client, mpd.cmd("play", [])));
+
+                    async.series(commands, function(err) {
+                        var reply = err
+                                  ? 'не смог включить'
+                                  : 'let\'s go dance';
+
+                        vasyaHobot.replyTo(message, reply);
+                    });
+                });
+            });
+        }
     });
 };

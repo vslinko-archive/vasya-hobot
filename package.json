@@ -5,7 +5,8 @@
         "thrift": "^0.9",
         "request": "^2.34",
         "async": "^0.2",
-        "mpd": "^1.0"
+        "mpd": "^1.0",
+        "vkontakte": "^0.3"
     },
     "private": true
 }
