@@ -1,7 +1,47 @@
-#!/bin/sh
-# Vasya Hobot
-#
-# Copyright (c) 2013-2014 Vyacheslav Slinko
-# Licensed under the MIT License
+#!/usr/bin/env node
+/**
+ * Vasya Hobot
+ *
+ * Copyright (c) 2013-2014 Vyacheslav Slinko
+ * Licensed under the MIT License
+ */
 
-node $(dirname $0)/../src/client/vasya.js
+var path = require('path');
+var fs = require('fs');
+
+var VasyaBrain = require('../src/client/brain/VasyaBrain');
+var SkypeHead = require('../src/client/heads/skype/SkypeHead');
+var ConsoleHead = require('../src/client/heads/console/ConsoleHead');
+
+
+function loadDirectory(vasya, directory) {
+    fs.readdirSync(directory).forEach(function(filename) {
+        require(path.join(directory, filename))(vasya);
+    });
+}
+
+
+function main() {
+    var vasya = new VasyaBrain();
+
+    switch (process.env.VASYA_HEAD || 'skype') {
+        case 'skype':
+            vasya.attachHead(new SkypeHead({
+                token: process.env.VASYA_TOKEN || 'token',
+                host: process.env.VASYA_HOST || 'localhost'
+            }));
+            break;
+
+        case 'console':
+            vasya.attachHead(new ConsoleHead());
+            break;
+    }
+
+    loadDirectory(vasya, path.join(__dirname, '../src/client/brain/libs'));
+    loadDirectory(vasya, path.join(__dirname, '../src/client/brain/handlers'));
+}
+
+
+if (require.main === module) {
+    main();
+}

@@ -6,5 +6,5 @@
 
 cd $(dirname $0)/../src
 
-thrift --gen js:node -out client/api skype.thrift
+thrift --gen js:node -out client/heads/skype/api skype.thrift
 thrift --gen py -out server/api skype.thrift
