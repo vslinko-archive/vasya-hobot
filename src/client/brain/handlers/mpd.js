@@ -75,6 +75,13 @@ function quieterCommand(message) {
 }
 
 
+function volumeCommand(volume, message) {
+    this.mpdCommand('setvol', [volume], function(err) {
+        this.replyTo(message, err ? 'не смог поменять' : 'поменял громкость');
+    }.bind(this));
+}
+
+
 module.exports = function(vasya) {
     vasya.addHelpMessage('Вася, играй ссылку SONG_URL');
     vasya.addHelpMessage('Вася, выключи музыку');
@@ -82,6 +89,7 @@ module.exports = function(vasya) {
     vasya.addHelpMessage('Вася, предыдущая песня');
     vasya.addHelpMessage('Вася, громче');
     vasya.addHelpMessage('Вася, тише');
+    vasya.addHelpMessage('Вася, громкость VOLUME');
     vasya.registerCommand(/^играй ссылку (.*)$/, playUrlCommand);
     vasya.registerCommand(/^play url (.*)$/, playUrlCommand);
     vasya.registerCommand(/^выключи музыку$/, stopCommand);
@@ -94,4 +102,6 @@ module.exports = function(vasya) {
     vasya.registerCommand(/^louder$/, louderCommand);
     vasya.registerCommand(/^тише$/, quieterCommand);
     vasya.registerCommand(/^quieter$/, quieterCommand);
+    vasya.registerCommand(/^громкость (\d+)$/, volumeCommand);
+    vasya.registerCommand(/^volume (\d+)$/, volumeCommand);
 };
