@@ -52,6 +52,10 @@ SkypeHead.prototype.sendMessage = function(message, callback) {
 
 
 SkypeHead.prototype._handleMessage = function(message) {
+    if (message.status !== 'RECEIVED') {
+        return;
+    }
+
     var message = new Message(this._convertChat(message.chat), message.body);
     this.emit('message', message);
 };
